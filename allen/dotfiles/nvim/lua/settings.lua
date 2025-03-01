@@ -8,8 +8,8 @@ vim.wo.relativenumber = true
 
 vim.cmd("autocmd FileType * setlocal formatoptions-=cro")
 vim.cmd([[
-  autocmd BufEnter * setlocal tabstop=4
-  autocmd BufEnter * setlocal shiftwidth=4
+  autocmd BufEnter * setlocal tabstop=8
+  autocmd BufEnter * setlocal shiftwidth=8
   autocmd BufEnter * setlocal expandtab
 ]])
 
