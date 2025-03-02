@@ -88,8 +88,6 @@
 
   users.defaultUserShell = pkgs.zsh;
 
-  #virtualisation.docker.enable = true;
-
   services = {
     printing.enable = true; # enable CUPS to print documents.
     xserver = {
