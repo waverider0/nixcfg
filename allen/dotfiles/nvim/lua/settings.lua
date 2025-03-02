@@ -11,6 +11,7 @@ vim.cmd([[
   autocmd BufEnter * setlocal tabstop=8
   autocmd BufEnter * setlocal shiftwidth=8
   autocmd BufEnter * setlocal expandtab
+  autocmd FileType html,json,nix setlocal tabstop=4 shiftwidth=4
 ]])
 
 vim.g.zig_fmt_autosave = false

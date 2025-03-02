@@ -35,13 +35,11 @@
   users.users.allen = {
     isNormalUser = true;
     description = "allen";
-    extraGroups = [ "docker" "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" ];
     packages = (with pkgs; [
-      android-studio
       clang
       discord
       dnsutils
-      docker
       ffmpeg
       gimp
       kdePackages.kdenlive
@@ -62,6 +60,7 @@
       tshark
       ungoogled-chromium
       valgrind
+      virt-manager
       vlc
       vscodium-fhs
       wireshark
@@ -89,7 +88,7 @@
 
   users.defaultUserShell = pkgs.zsh;
 
-  virtualisation.docker.enable = true;
+  #virtualisation.docker.enable = true;
 
   services = {
     printing.enable = true; # enable CUPS to print documents.
