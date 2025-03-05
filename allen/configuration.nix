@@ -42,6 +42,7 @@
       dnsutils
       ffmpeg
       gimp
+      godot_4
       kdePackages.kdenlive
       keepassxc
       nasm
@@ -66,7 +67,6 @@
       wireshark
       xournalpp
       yt-dlp
-      zig
     ]) ++ (with pkgs-2411; [
         lldb
     ]);

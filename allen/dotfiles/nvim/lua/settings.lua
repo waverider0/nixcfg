@@ -8,9 +8,9 @@ vim.opt.smartcase = true
 vim.opt.number = true
 vim.wo.relativenumber = true
 
+vim.opt.expandtab = true
 vim.opt.tabstop = 8
 vim.opt.shiftwidth = 8
-vim.opt.expandtab = true
 
 vim.cmd("autocmd FileType * setlocal formatoptions-=cro") -- disable automatic commenting on newline
 vim.cmd("autocmd FileType html,json,nix setlocal tabstop=4 shiftwidth=4")
