@@ -37,38 +37,36 @@
     description = "allen";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = (with pkgs; [
+      binutils
       clang
       discord
-      dnsutils
       ffmpeg
+      gcc
+      gdb
+      gf
       gimp
-      godot_4
       kdePackages.kdenlive
       keepassxc
-      nasm
+      lldb
       netcat
       nmap
       obs-studio
       odin
-      ollama
       python3
       qbittorrent
-      qemu
       ripgrep
+      rr
       signal-desktop
       spotdl
       tealdeer
-      tshark
       ungoogled-chromium
       valgrind
-      virt-manager
       vlc
-      vscodium-fhs
       wireshark
       xournalpp
       yt-dlp
     ]) ++ (with pkgs-2411; [
-        lldb
+        # ...
     ]);
   };
 
