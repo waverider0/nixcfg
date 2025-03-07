@@ -44,6 +44,7 @@
       gcc
       gdb
       gf
+      ghidra
       gimp
       kdePackages.kdenlive
       keepassxc

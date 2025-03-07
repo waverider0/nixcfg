@@ -1,8 +1,9 @@
 export CLICOLOR=1
 export PS1=$'%n@%m:%{\e[01;32m%}%~%{\e[0m%}$ '
 
-export MANPAGER='nvim +Man!'
 alias vi='nvim'
+alias vim='nvim'
+export MANPAGER='nvim +Man!'
 set -o vi
 
 fcd() {
