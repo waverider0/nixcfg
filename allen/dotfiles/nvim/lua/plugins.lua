@@ -21,27 +21,27 @@ vim.opt.rtp:prepend(lazypath)
 -- setup plugins
 
 require("lazy").setup({
-  spec = {
-    {
-        'nvim-telescope/telescope.nvim',
-        branch = '0.1.x',
-        dependencies = { 'nvim-lua/plenary.nvim' },
-    },
-    {
-        "ThePrimeagen/harpoon",
-        branch = "harpoon2",
-        dependencies = { "nvim-lua/plenary.nvim" },
-    },
-    {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-    },
-    {
-        "rose-pine/neovim",
-        name = "rose-pine"
-    },
-  },
-  checker = { enabled = true },
+        spec = {
+                {
+                        'nvim-telescope/telescope.nvim',
+                        branch = '0.1.x',
+                        dependencies = { 'nvim-lua/plenary.nvim' },
+                },
+                {
+                        "ThePrimeagen/harpoon",
+                        branch = "harpoon2",
+                        dependencies = { "nvim-lua/plenary.nvim" },
+                },
+                {
+                        "nvim-treesitter/nvim-treesitter",
+                        build = ":TSUpdate",
+                },
+                {
+                        "rose-pine/neovim",
+                        name = "rose-pine"
+                },
+        },
+        checker = { enabled = true },
 })
 
 -- telescope
@@ -68,20 +68,21 @@ vim.keymap.set("n", "<leader>5", function() harpoon:list():select(5) end)
 local configs = require("nvim-treesitter.configs")
 
 configs.setup({
-    ensure_installed = {
-        "bash",
-        "c",
-        "cpp",
-        "javascript",
-        "lua",
-        "odin",
-        "python",
-        "typescript",
-        "zig",
-    },
-    sync_install = false,
-    highlight = { enable = true },
-    indent = { enable = true },
+        ensure_installed = {
+                "bash",
+                "c",
+                "cpp",
+                "glsl",
+                "javascript",
+                "lua",
+                "nix",
+                "odin",
+                "python",
+                "typescript",
+        },
+        sync_install = false,
+        highlight = { enable = true },
+        indent = { enable = true },
 })
 
 -- colorscheme
