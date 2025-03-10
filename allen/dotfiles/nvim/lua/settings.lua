@@ -4,6 +4,11 @@ vim.opt.hlsearch = false
 vim.opt.wrap = false
 vim.cmd("autocmd FileType * setlocal formatoptions-=cro") -- disable automatic commenting on newline
 
+vim.opt.autoindent = false
+vim.opt.smartindent = false
+vim.opt.cindent = false
+vim.cmd("filetype indent off")
+
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
