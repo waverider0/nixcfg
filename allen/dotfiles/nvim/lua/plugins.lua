@@ -68,11 +68,15 @@ vim.keymap.set("n", "<leader>5", function() harpoon:list():select(5) end)
 local configs = require("nvim-treesitter.configs")
 
 configs.setup({
+        auto_install = false,
         ensure_installed = {
+                "asm",
                 "bash",
                 "c",
                 "cpp",
+                "css",
                 "glsl",
+                "html",
                 "javascript",
                 "lua",
                 "nix",
