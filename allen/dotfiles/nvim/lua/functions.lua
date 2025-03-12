@@ -1,11 +1,3 @@
-vim.keymap.set("i", "<C-c>", "<Esc>")
-
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-
-vim.keymap.set("n", "<C-e>", "<nop>")
-vim.keymap.set("n", "Q", "<nop>")
-
 local function toggle_line_numbers()
         if vim.wo.relativenumber then
                 vim.wo.relativenumber = false
@@ -17,3 +9,15 @@ local function toggle_line_numbers()
         end
 end
 vim.keymap.set({"n", "v"}, "<C-l>", toggle_line_numbers, { noremap = true, silent = true })
+
+local function toggle_word_wrap()
+        if vim.opt.wrap:get() then
+                vim.opt.wrap = false
+                print("word wrap disabled")
+        else
+                vim.opt.wrap = true
+                print("word wrap enabled")
+        end
+end
+vim.api.nvim_create_user_command('WW', toggle_word_wrap, {})
+vim.cmd('cnoreabbrev ww WW')
