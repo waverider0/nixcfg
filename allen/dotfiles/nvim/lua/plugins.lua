@@ -21,33 +21,44 @@ vim.opt.rtp:prepend(lazypath)
 -- setup plugins
 
 require("lazy").setup({
-        spec = {
-                {
-                        'nvim-telescope/telescope.nvim',
-                        branch = '0.1.x',
-                        dependencies = { 'nvim-lua/plenary.nvim' },
-                },
-                {
-                        "ThePrimeagen/harpoon",
-                        branch = "harpoon2",
-                        dependencies = { "nvim-lua/plenary.nvim" },
-                },
-                {
-                        "nvim-treesitter/nvim-treesitter",
-                        build = ":TSUpdate",
-                },
-                {
-                        "rose-pine/neovim",
-                        name = "rose-pine"
-                },
+    spec = {
+        {
+            'nvim-telescope/telescope.nvim',
+            branch = '0.1.x',
+            dependencies = { 'nvim-lua/plenary.nvim' },
         },
-        checker = { enabled = true },
+        {
+            "ThePrimeagen/harpoon",
+            branch = "harpoon2",
+            dependencies = { "nvim-lua/plenary.nvim" },
+        },
+        {
+            "nvim-treesitter/nvim-treesitter",
+            build = ":TSUpdate",
+        },
+        {
+            "rose-pine/neovim",
+            name = "rose-pine"
+        },
+    },
+    checker = { enabled = true },
 })
 
 -- telescope
 
+require('telescope').setup {
+    defaults = {
+        mappings = {
+            i = {
+                ["<C-d>"] = "delete_buffer"
+            }
+        }
+    }
+}
+
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<C-t>', builtin.find_files, {})
+vim.keymap.set('n', '<C-b>', builtin.buffers, {})
 vim.keymap.set('n', '<leader>g', builtin.live_grep, {})
 
 -- harpoon
@@ -55,8 +66,8 @@ vim.keymap.set('n', '<leader>g', builtin.live_grep, {})
 local harpoon = require("harpoon")
 harpoon:setup()
 
-vim.keymap.set("n", "<leader>e", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
+vim.keymap.set("n", "<leader>e", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
 vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
 vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
@@ -68,25 +79,25 @@ vim.keymap.set("n", "<leader>5", function() harpoon:list():select(5) end)
 local configs = require("nvim-treesitter.configs")
 
 configs.setup({
-        auto_install = false,
-        ensure_installed = {
-                "asm",
-                "bash",
-                "c",
-                "cpp",
-                "css",
-                "glsl",
-                "html",
-                "javascript",
-                "lua",
-                "nix",
-                "odin",
-                "python",
-                "typescript",
-        },
-        sync_install = false,
-        highlight = { enable = true },
-        indent = { enable = true },
+    auto_install = false,
+    ensure_installed = {
+        "asm",
+        "bash",
+        "c",
+        "cpp",
+        "css",
+        "glsl",
+        "html",
+        "javascript",
+        "lua",
+        "nix",
+        "odin",
+        "python",
+        "typescript",
+    },
+    highlight = { enable = true },
+    indent = { enable = false },
+    sync_install = false,
 })
 
 -- colorscheme

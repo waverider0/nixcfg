@@ -20,4 +20,4 @@ vim.api.nvim_set_hl(0, "LineNr", { bold = false, fg = "grey" })
 vim.opt.expandtab = true
 vim.opt.tabstop = 8
 vim.opt.shiftwidth = 8
-vim.cmd("autocmd FileType html,json,nix setlocal tabstop=4 shiftwidth=4")
+vim.cmd("autocmd FileType html,json,lua,nix setlocal tabstop=4 shiftwidth=4")
