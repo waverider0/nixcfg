@@ -34,6 +34,7 @@
             binutils
             brave
             clang
+            cutter
             direnv
             discord
             ffmpeg
@@ -44,6 +45,7 @@
             ghidra
             gimp
             htop
+            imhex
             kdePackages.kdenlive
             keepassxc
             lldb
