@@ -31,6 +31,7 @@ require("lazy").setup({
             "nvim-treesitter/nvim-treesitter",
             build = ":TSUpdate",
         },
+
         {
             "rose-pine/neovim",
             name = "rose-pine"
@@ -62,21 +63,7 @@ local configs = require("nvim-treesitter.configs")
 
 configs.setup({
     auto_install = false,
-    ensure_installed = {
-        "asm",
-        "bash",
-        "c",
-        "cpp",
-        "css",
-        "glsl",
-        "html",
-        "javascript",
-        "lua",
-        "nix",
-        "odin",
-        "python",
-        "typescript",
-    },
+    ensure_installed = { "asm", "bash", "c", "cpp", "glsl", "lua", "nix", "python" },
     highlight = { enable = true },
     indent = { enable = false },
     sync_install = false,

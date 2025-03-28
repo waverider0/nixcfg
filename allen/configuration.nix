@@ -17,9 +17,8 @@
     environment.systemPackages = (with pkgs; [
         git
         gnupg
-        neovim
+        man-pages-posix
         pinentry
-        tmux
         wl-clipboard
         zsh
     ]) ++ (with pkgs-2411; [
@@ -31,10 +30,10 @@
         description = "allen";
         extraGroups = [ "networkmanager" "wheel" ];
         packages = (with pkgs; [
+            anki
             binutils
             brave
             clang
-            cutter
             direnv
             discord
             ffmpeg
@@ -42,24 +41,24 @@
             gcc
             gdb
             gf
-            ghidra
             gimp
             htop
             imhex
             kdePackages.kdenlive
             keepassxc
-            lldb
+            neovim
             netcat
             nmap
             obs-studio
-            odin
-            python3
             qbittorrent
+            renderdoc
             ripgrep
             rr
+            sage
             signal-desktop
             spotdl
             tealdeer
+            tmux
             tree
             ungoogled-chromium
             valgrind
@@ -72,17 +71,9 @@
         ]);
     };
 
-    programs = {
-        steam = {
-            enable = true;
-            remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-            dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-            localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-        };
-        zsh = {
-            enable = true;
-            ohMyZsh.enable = true;
-        };
+    programs.zsh = {
+        enable = true;
+        ohMyZsh.enable = true;
     };
 
     users.defaultUserShell = pkgs.zsh;
