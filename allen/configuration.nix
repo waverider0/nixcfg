@@ -15,10 +15,6 @@
     };
 
     environment.systemPackages = (with pkgs; [
-        git
-        gnupg
-        man-pages-posix
-        pinentry
         wl-clipboard
         zsh
     ]) ++ (with pkgs-2411; [
@@ -31,39 +27,31 @@
         extraGroups = [ "networkmanager" "wheel" ];
         packages = (with pkgs; [
             anki
-            binutils
             brave
-            clang
             direnv
             discord
             ffmpeg
             fzf
-            gcc
-            gdb
-            gf
             gimp
+            git
+            gnupg
             htop
-            imhex
             kdePackages.kdenlive
             keepassxc
+            man-pages-posix
             neovim
-            netcat
-            nmap
             obs-studio
+            pinentry
             qbittorrent
-            renderdoc
             ripgrep
-            rr
-            sage
             signal-desktop
             spotdl
             tealdeer
+            texliveFull
             tmux
             tree
             ungoogled-chromium
-            valgrind
             vlc
-            wireshark
             xournalpp
             yt-dlp
         ]) ++ (with pkgs-2411; [

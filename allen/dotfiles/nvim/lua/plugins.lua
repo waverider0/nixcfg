@@ -28,11 +28,6 @@ require("lazy").setup({
             dependencies = { 'nvim-lua/plenary.nvim' },
         },
         {
-            "nvim-treesitter/nvim-treesitter",
-            build = ":TSUpdate",
-        },
-
-        {
             "rose-pine/neovim",
             name = "rose-pine"
         },
@@ -56,18 +51,6 @@ local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<C-t>', builtin.find_files, {})
 vim.keymap.set('n', '<C-b>', builtin.buffers, {})
 vim.keymap.set('n', '<leader>g', builtin.live_grep, {})
-
--- treesitter
-
-local configs = require("nvim-treesitter.configs")
-
-configs.setup({
-    auto_install = false,
-    ensure_installed = { "asm", "bash", "c", "cpp", "glsl", "lua", "nix", "python" },
-    highlight = { enable = true },
-    indent = { enable = false },
-    sync_install = false,
-})
 
 -- colorscheme
 
