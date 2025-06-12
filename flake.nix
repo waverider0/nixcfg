@@ -14,7 +14,7 @@
     outputs = { self, nixpkgs, agenix, home-manager, ... }: {
         homeConfigurations = {
             "allen@mac" = home-manager.lib.homeManagerConfiguration {
-                pkgs = import nixpkgs { system = "aarch64-darwin"; config = { allowUnfree = true; }; };
+                pkgs = import nixpkgs { system = "aarch64-darwin"; config.allowUnfree = true; };
                 modules = [ ./home/common.nix ./home/pc.nix ./home/hosts/mac.nix agenix.homeManagerModules.default ];
             };
             "allen@nixpc" = home-manager.lib.homeManagerConfiguration {
