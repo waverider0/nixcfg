@@ -31,6 +31,7 @@
     };
 
     programs.tmux.extraConfig = lib.mkAfter ''
+        set-option -g default-shell /bin/zsh
         bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'pbcopy'
     '';
 

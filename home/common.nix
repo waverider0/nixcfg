@@ -59,8 +59,6 @@
             bind-key e send-prefix
             bind-key Enter new-session
 
-            set-option -g default-shell /bin/zsh
-
             set-option -g set-clipboard on
             set-option -g history-limit 5000
             set -g base-index 1
