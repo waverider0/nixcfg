@@ -38,7 +38,7 @@
 
     qt.kde.settings = {
         kglobalshortcutsrc = {
-            kwin."Window Maximize" = "Meta+F,Meta+PgUp,Maximize Window";
+            kwin."Window Maximize" = "Meta+Return,Meta+PgUp,Maximize Window";
             kwin."Window Minimize" = "Meta+M,Meta+PgUp,Minimize Window";
             services."org.kde.konsole.desktop"._launch = "Meta+Q";
         };
