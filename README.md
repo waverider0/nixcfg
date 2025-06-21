@@ -1,3 +1,9 @@
+## rebuild
+```
+cd nixcfg
+sudo nixos-rebuild switch --flake '.#nixpc'
+```
+
 ## home manager
 ```
 cd nixcfg
@@ -5,8 +11,13 @@ nix-shell -p home-manager
 ./hm '.#allen@nixpc'
 ```
 
-## rebuild
+# manually decrypt a secret
 ```
-cd nixcfg
-sudo nixos-rebuild switch --flake '.#nixpc'
+age --decrypt -i secrets/id -o somesecret secrets/somesecret.age
 ```
+
+# use git ssh key for repo
+```
+git remote set-url origin git@github.com:waverider0/nixcfg.git
+```
+
