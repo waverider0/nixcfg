@@ -35,4 +35,18 @@
     programs.tmux.extraConfig = lib.mkAfter ''
         bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'wl-copy'
     '';
+
+    qt.kde.settings = {
+        kglobalshortcutsrc = {
+            kwin."Window Maximize" = "Meta+F,Meta+PgUp,Maximize Window";
+            kwin."Window Minimize" = "Meta+M,Meta+PgUp,Minimize Window";
+            services."org.kde.konsole.desktop"._launch = "Meta+Q";
+        };
+        kwinrc = {
+            Desktops = { Number = 3; Rows = 1; };
+            NightColor = { Active = true; Mode = "Constant"; NightTemperature = 3000; };
+            Tiling = { padding = 4; };
+            Xwayland = { Scale = 1; };
+        };
+    };
 }

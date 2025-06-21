@@ -16,10 +16,6 @@ nix-shell -p home-manager
 age --decrypt -i secrets/id -o somesecret secrets/somesecret.age
 ```
 
-# use git ssh key for repo
-```
-git remote set-url origin git@github.com:waverider0/nixcfg.git
-```
-
-make sure to `git add` all changes before running commands (else can cause weird errors)
+# note
+make sure to `git add` changes before running commands (else can cause weird errors)
 
