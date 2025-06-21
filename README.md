@@ -21,3 +21,5 @@ age --decrypt -i secrets/id -o somesecret secrets/somesecret.age
 git remote set-url origin git@github.com:waverider0/nixcfg.git
 ```
 
+make sure to `git add` all changes before running commands (else can cause weird errors)
+

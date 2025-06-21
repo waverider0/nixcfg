@@ -24,6 +24,7 @@
     };
 
     home.file = {
+        ".ssh/config".source = ../../secrets/ssh_config;
         ".ssh/github.pub".source = ../../secrets/github.pub;
         ".ssh/xmr.pub".source = ../../secrets/xmr.pub;
         "./config/VSCodium/User/keybindings.json".text = builtins.toJSON config.programs.vscode.profiles.default.keybindings;
