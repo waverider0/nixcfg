@@ -1,7 +1,9 @@
 let
     id = builtins.readFile ./id.pub;
 in {
-    "github.age".publicKeys = [ id ];
-    "xmr.age".publicKeys = [ id ];
     ".kdbx.kdbx.age".publicKeys  = [ id ];
+    "github.age".publicKeys = [ id ];
+    "wg_laptop.age".publicKeys = [ id ];
+    "wg_server.age".publicKeys = [ id ];
+    "xmr.age".publicKeys = [ id ];
 }

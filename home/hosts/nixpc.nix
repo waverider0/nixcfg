@@ -8,6 +8,10 @@
     age = {
         identityPaths = [ ../../secrets/id ];
         secrets = {
+            ".kdbx.kdbx.age" = {
+                file = ../../secrets/.kdbx.kdbx.age;
+                path = "/home/allen/.kdbx.kdbx";
+            };
             "github.age" = {
                 file = ../../secrets/github.age;
                 path = "/home/allen/.ssh/github";
@@ -16,37 +20,37 @@
                 file = ../../secrets/xmr.age;
                 path = "/home/allen/.ssh/xmr";
             };
-            ".kdbx.kdbx.age" = {
-                file = ../../secrets/.kdbx.kdbx.age;
-                path = "/home/allen/.kdbx.kdbx";
-            };
         };
     };
 
     home.file = {
-        ".ssh/config".source = ../../secrets/ssh_config;
-        ".ssh/github.pub".source = ../../secrets/github.pub;
-        ".ssh/xmr.pub".source = ../../secrets/xmr.pub;
+        ".ssh/config".source                           = ../../secrets/ssh_config;
+        ".ssh/github.pub".source                       = ../../secrets/github.pub;
+        ".ssh/xmr.pub".source                          = ../../secrets/xmr.pub;
         "./config/VSCodium/User/keybindings.json".text = builtins.toJSON config.programs.vscode.profiles.default.keybindings;
-        "./config/VSCodium/User/settings.json".text = builtins.toJSON config.programs.vscode.profiles.default.userSettings;
+        "./config/VSCodium/User/settings.json".text    = builtins.toJSON config.programs.vscode.profiles.default.userSettings;
     };
 
-
     programs.tmux.extraConfig = lib.mkAfter ''
+        set-option -g default-shell "${pkgs.zsh}/bin/zsh"
         bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'wl-copy'
     '';
 
     qt.kde.settings = {
+        kcminputrc = {
+            RepeatDelay = 300;
+            RepeatRate = 50;
+        };
         kglobalshortcutsrc = {
-            kwin."Window Maximize" = "Meta+Return,Meta+PgUp,Maximize Window";
-            kwin."Window Minimize" = "Meta+M,Meta+PgUp,Minimize Window";
+            kwin."Window Maximize"                     = "Meta+Return,Meta+PgUp,Maximize Window";
+            kwin."Window Minimize"                     = "Meta+M,Meta+PgUp,Minimize Window";
             services."org.kde.konsole.desktop"._launch = "Meta+Q";
         };
         kwinrc = {
-            Desktops = { Number = 3; Rows = 1; };
+            Desktops   = { Number = 3; Rows = 1; };
             NightColor = { Active = true; Mode = "Constant"; NightTemperature = 3000; };
-            Tiling = { padding = 4; };
-            Xwayland = { Scale = 1; };
+            Tiling     = { padding = 4; };
+            Xwayland   = { Scale = 1; };
         };
     };
 }

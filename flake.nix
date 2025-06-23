@@ -30,7 +30,7 @@
         nixosConfigurations = {
             "nixpc" = nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
-                modules = [ ./hosts/nixpc/configuration.nix ];
+                modules = [ ./hosts/nixpc/configuration.nix agenix.nixosModules.default ];
             };
             "xmr" = nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";

@@ -3,28 +3,97 @@
 {
     imports = [ ./hardware-configuration.nix ];
 
+    nixpkgs.config.allowUnfree = true;
+    nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+    #age = {
+    #    identityPaths = [ ../../secrets/id ];
+    #    secrets."wg_laptop" = {
+    #        file  = ../../secrets/wg_laptop.age;
+    #        owner = "root";
+    #        group = "root";
+    #        mode  = "0600";
+    #    };
+    #};
+
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
 
-    nixpkgs.config.allowUnfree = false;
-    nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
     networking = {
-        hostName = "nixos";
-        networkmanager.enable = true;
+        hostName                 = "nixos";
+        networkmanager.enable    = true;
+        firewall.allowedUDPPorts = [ 51820 ];
+
+        #wireguard.enable = true;
+        #wireguard.interfaces.wg0 = {
+        #    ips            = [ "10.100.0.2/24" ];
+        #    listenPort     = 51820;
+        #    privateKeyFile = config.age.secrets.wg_laptop.path;
+        #    peers = [{
+        #        publicKey           = "{server public key}";
+        #        allowedIPs          = [ "0.0.0.0/0" "::/0" ]; # forward all traffic via VPN
+        #        endpoint            = "{server ip}:51820";
+        #        persistentKeepalive = 25;                     # send keepalives every 25 s. important to keep NAT tables alive
+        #    }];
+        #};
+    };
+
+    #systemd.services."wireguard-wg0".serviceConfig = {
+    #    NoNewPrivileges         = true;
+    #    PrivateTmp              = true;
+    #    PrivateDevices          = true;
+    #    ProtectHome             = "tmpfs";
+    #    ProtectSystem           = "strict";
+    #    ProtectKernelModules    = true;
+    #    ProtectKernelTunables   = true;
+    #    ProtectControlGroups    = true;
+    #    RestrictAddressFamilies = [ "AF_INET" "AF_INET6" ];
+    #    SystemCallArchitectures = "native";
+    #};
+
+    services = {
+        displayManager.sddm.enable = true;
+        desktopManager.plasma6.enable = true;
+
+        xserver = {
+            enable      = true;
+            xkb.layout  = "us";
+            xkb.variant = "";
+        };
+
+        pipewire = {
+            enable            = true;
+            alsa.enable       = true;
+            alsa.support32Bit = true;
+            pulse.enable      = true;
+        };
+
+        resolved = {
+            enable  = true;
+            dns     = [ "10.100.0.1" ];
+            domains = [ "~." ];
+        };
     };
 
     environment.systemPackages = with pkgs; [
         brave
         curl
         fzf
+        gimp
         git
         keepassxc
         neovim
+        opentofu
+        popsicle
+        qbittorrent
+        signal-desktop
+        thunderbird
         tmux
         tree
+        vlc
         vscodium
         wget
+        wireguard-tools
         wl-clipboard
     ];
 
@@ -51,38 +120,7 @@
         LC_TIME = "en_US.UTF-8";
     };
 
-    # Enable the X11 windowing system.
-    # You can disable this if you're only using the Wayland session.
-    services.xserver.enable = true;
-
-    # Enable the KDE Plasma Desktop Environment.
-    services.displayManager.sddm.enable = true;
-    services.desktopManager.plasma6.enable = true;
-
-    # Configure keymap in X11
-    services.xserver.xkb = {
-        layout = "us";
-        variant = "";
-    };
-
-    # Enable CUPS to print documents.
-    services.printing.enable = true;
-
-    # Enable sound with pipewire.
-    services.pulseaudio.enable = false;
     security.rtkit.enable = true;
-    services.pipewire = {
-    enable = true;
-        alsa.enable = true;
-        alsa.support32Bit = true;
-        pulse.enable = true;
-        # If you want to use JACK applications, uncomment this
-        #jack.enable = true;
-
-        # use the example session manager (no others are packaged yet so this is enabled by default,
-        # no need to redefine it in your config for now)
-        #media-session.enable = true;
-    };
 
     system.stateVersion = "25.05";
 }

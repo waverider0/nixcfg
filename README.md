@@ -13,7 +13,9 @@ nix-shell -p home-manager
 
 # manually decrypt a secret
 ```
-age --decrypt -i secrets/id -o somesecret secrets/somesecret.age
+cd secrets
+age -d -i id -o decrypted encrypted.age
+
 ```
 
 # note
