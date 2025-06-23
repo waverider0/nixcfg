@@ -61,6 +61,11 @@
             xkb.variant = "";
         };
 
+        keyd = {
+            enable = true;
+            keyboards.default.settings.main.capslock = "overload(control, esc)";
+        };
+
         pipewire = {
             enable            = true;
             alsa.enable       = true;
@@ -68,11 +73,11 @@
             pulse.enable      = true;
         };
 
-        resolved = {
-            enable  = true;
-            dns     = [ "10.100.0.1" ];
-            domains = [ "~." ];
-        };
+        #resolved = {
+        #    enable  = true;
+        #    dns     = [ "10.100.0.1" ];
+        #    domains = [ "~." ];
+        #};
     };
 
     environment.systemPackages = with pkgs; [
@@ -81,7 +86,9 @@
         fzf
         gimp
         git
+        htop
         keepassxc
+        lm_sensors
         neovim
         opentofu
         popsicle
@@ -120,6 +127,7 @@
         LC_TIME = "en_US.UTF-8";
     };
 
+    hardware.bluetooth.enable = true;
     security.rtkit.enable = true;
 
     system.stateVersion = "25.05";
