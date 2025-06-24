@@ -6,26 +6,26 @@
         package = pkgs.vscodium;
         profiles.default.keybindings = [
             {
-                key = "ctrl+tab";
+                key     = "ctrl+tab";
                 command = "workbench.action.nextEditor";
             }
             {
-                key = "ctrl+shift+tab";
+                key     = "ctrl+shift+tab";
                 command = "workbench.action.previousEditor";
             }
             {
-                key = "ctrl+t";
+                key     = "ctrl+t";
                 command = "workbench.action.quickOpen";
             }
             {
-                key = "ctrl+n";
+                key     = "ctrl+n";
                 command = "workbench.action.quickOpenSelectNext";
-                when = "inQuickOpen";
+                when    = "inQuickOpen";
             }
             {
-                key = "ctrl+p";
+                key     = "ctrl+p";
                 command = "workbench.action.quickOpenSelectPrevious";
-                when = "inQuickOpen";
+                when    = "inQuickOpen";
             }
             {
                 key     = "ctrl+c";

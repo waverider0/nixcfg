@@ -3,7 +3,7 @@
 {
     imports = [
         ./hardware-configuration.nix
-        ./vm.nix
+        ./virtualisation.nix
         ./vpn.nix
     ];
 
@@ -58,7 +58,6 @@
 
         keyd.enable = true;
         keyd.keyboards.default.settings.main.capslock = "overload(control, esc)";
-
         libinput.touchpad.disableWhileTyping = true;
     };
 

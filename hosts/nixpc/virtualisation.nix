@@ -1,8 +1,12 @@
 { pkgs, ... }:
 
 {
-    virtualisation.libvirtd.enable = true;
-    virtualisation.spiceUSBRedirection.enable = true;
+    virtualisation = {
+        docker.rootless.enable = true;
+        docker.rootless.setSocketVariable = true;
+        libvirtd.enable = true;
+        spiceUSBRedirection.enable = true;
+    };
     services.qemuGuest.enable = true;
     services.spice-vdagentd.enable = true;
     programs.virt-manager.enable = true;

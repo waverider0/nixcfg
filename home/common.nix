@@ -73,6 +73,7 @@
 
     programs.zsh = {
         enable = true;
+        oh-my-zsh.enable = true;
         initContent = ''
             export CLICOLOR=1
             export PS1=$'%n@%m:%{\e[01;32m%}%~%{\e[0m%}$ '
