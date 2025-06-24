@@ -44,7 +44,7 @@
         desktopManager.plasma6.enable = true;
 
         xserver = {
-            enable      = true;
+            enable      = false;
             xkb.layout  = "us";
             xkb.variant = "";
         };
@@ -56,10 +56,8 @@
             pulse.enable      = true;
         };
 
-        keyd = {
-            enable = true;
-            keyboards.default.settings.main.capslock = "overload(control, esc)";
-        };
+        keyd.enable = true;
+        keyd.keyboards.default.settings.main.capslock = "overload(control, esc)";
 
         libinput.touchpad.disableWhileTyping = true;
     };

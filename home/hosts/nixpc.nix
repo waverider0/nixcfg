@@ -44,7 +44,6 @@
         };
     };
 
-
     programs.tmux.extraConfig = lib.mkAfter ''
         set-option -g default-shell "${pkgs.zsh}/bin/zsh"
         bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'wl-copy'
@@ -52,8 +51,8 @@
 
     qt.kde.settings = {
         kcminputrc = {
-            RepeatDelay = 300;
-            RepeatRate = 50;
+            Keyboard.RepeatDelay = 300;
+            Keyboard.RepeatRate = 50;
         };
         kglobalshortcutsrc = {
             kwin."Window Maximize"                     = "Meta+Return,Meta+PgUp,Maximize Window";
