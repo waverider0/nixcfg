@@ -91,7 +91,6 @@
         lm_sensors
         neovim
         opentofu
-        popsicle
         qbittorrent
         signal-desktop
         thunderbird
@@ -104,6 +103,7 @@
         wl-clipboard
     ];
 
+    programs.gnome-disks.enable = true;
     programs.zsh.enable = true;
 
     users.defaultUserShell = pkgs.zsh;
