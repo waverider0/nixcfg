@@ -1,9 +1,30 @@
 { config, lib, pkgs, ... }:
 
 {
-    home.homeDirectory = "/home/allen";
-    home.username      = "allen";
-    home.packages      = [ pkgs.age ];
+    home = {
+        username      = "allen";
+        homeDirectory = "/home/allen";
+
+        packages = with pkgs; [
+            age
+            brave
+            fzf
+            gimp
+            keepassxc
+            opentofu
+            qbittorrent
+            signal-desktop
+            tree
+            vlc
+            vscodium
+        ];
+
+        file = {
+            ".ssh/config".source     = ../../secrets/ssh_config;
+            ".ssh/github.pub".source = ../../secrets/github.pub;
+            ".ssh/xmr.pub".source    = ../../secrets/xmr.pub;
+        };
+    };
 
     age = {
         identityPaths = [ ../../secrets/id ];
@@ -23,13 +44,6 @@
         };
     };
 
-    home.file = {
-        ".ssh/config".source                           = ../../secrets/ssh_config;
-        ".ssh/github.pub".source                       = ../../secrets/github.pub;
-        ".ssh/xmr.pub".source                          = ../../secrets/xmr.pub;
-        "./config/VSCodium/User/keybindings.json".text = builtins.toJSON config.programs.vscode.profiles.default.keybindings;
-        "./config/VSCodium/User/settings.json".text    = builtins.toJSON config.programs.vscode.profiles.default.userSettings;
-    };
 
     programs.tmux.extraConfig = lib.mkAfter ''
         set-option -g default-shell "${pkgs.zsh}/bin/zsh"
