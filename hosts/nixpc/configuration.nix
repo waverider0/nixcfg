@@ -78,6 +78,9 @@
         #    dns     = [ "10.100.0.1" ];
         #    domains = [ "~." ];
         #};
+
+        qemuGuest.enable = true;
+        spice-vdagentd.enable = true;
     };
 
     environment.systemPackages = with pkgs; [
@@ -92,6 +95,7 @@
         neovim
         opentofu
         qbittorrent
+        qemu
         signal-desktop
         thunderbird
         tmux
@@ -103,14 +107,23 @@
         wl-clipboard
     ];
 
-    programs.gnome-disks.enable = true;
-    programs.zsh.enable = true;
+    programs = {
+        gnome-disks.enable = true;
+        virt-manager.enable = true;
+        zsh.enable = true;
+    };
 
-    users.defaultUserShell = pkgs.zsh;
-    users.users.allen = {
-        isNormalUser = true;
-        description = "allen";
-        extraGroups = [ "networkmanager" "wheel" ];
+    virtualisation.libvirtd.enable = true;
+    virtualisation.spiceUSBRedirection.enable = true;
+
+    users = {
+        defaultUserShell = pkgs.zsh;
+        groups.libvirtd.members = [ "allen" ];
+        users.allen = {
+            isNormalUser = true;
+            description = "allen";
+            extraGroups = [ "networkmanager" "wheel" ];
+        };
     };
 
     time.timeZone = "America/New_York";
