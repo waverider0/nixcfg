@@ -69,8 +69,9 @@
 
     environment.systemPackages = with pkgs; [
         curl
-        neovim
-        tmux
+        git
+        htop
+        vim
         wget
         wl-clipboard
     ];

@@ -18,6 +18,16 @@
                 command = "workbench.action.quickOpen";
             }
             {
+                key = "ctrl+n";
+                command = "workbench.action.quickOpenSelectNext";
+                when = "inQuickOpen";
+            }
+            {
+                key = "ctrl+p";
+                command = "workbench.action.quickOpenSelectPrevious";
+                when = "inQuickOpen";
+            }
+            {
                 key     = "ctrl+c";
                 command = "workbench.action.closeQuickOpen";
                 when    = "inQuickOpen";
