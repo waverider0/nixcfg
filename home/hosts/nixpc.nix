@@ -14,6 +14,7 @@
             opentofu
             qbittorrent
             signal-desktop
+            spotdl
             tree
             vlc
             vscodium
