@@ -57,7 +57,7 @@
         };
 
         keyd.enable = true;
-        keyd.keyboards.default.settings.main.capslock = "overload(control, esc)";
+        keyd.keyboards.default.settings.main.capslock = "overload(control, noop)";
         libinput.touchpad.disableWhileTyping = true;
     };
 
