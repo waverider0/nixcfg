@@ -8,6 +8,7 @@
         packages = with pkgs; [
             age
             brave
+            discord
             fzf
             gimp
             keepassxc
