@@ -41,11 +41,11 @@
             "editor.minimap.enabled"            = false;
             "editor.tabSize"                    = 4;
             "extensions.autoUpdate"             = false;
+            "extensions.experimental.affinity"  = { "asvetliakov.vscode-neovim" = 1; };
             "extensions.ignoreRecommendations"  = true;
             "git.openRepositoryInParentFolders" = "never";
             "telemetry.feedback.enabled"        = false;
             "telemetry.telemetryLevel"          = "off";
-            "vim.useSystemClipboard"            = true;
             "workbench.startupEditor"           = "none";
             "workbench.editor.empty.hint"       = "hidden";
         };

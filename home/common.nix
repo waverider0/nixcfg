@@ -38,7 +38,7 @@
 
             -- toggle word wrap
 
-            local function toggle_word_wrap()
+            local function toggle_wrap()
                 if vim.opt.wrap:get() then
                     vim.opt.wrap = false
                     print("word wrap disabled")
@@ -47,25 +47,26 @@
                     print("word wrap enabled")
                 end
             end
-            vim.api.nvim_create_user_command('Wrap', toggle_word_wrap, {})
+            vim.api.nvim_create_user_command('Wrap', toggle_wrap, {})
             vim.cmd('cnoreabbrev ww Wrap')
 
             -- align to delimiter
 
             local function align(delim)
-                local first, last, stop = vim.fn.line("'<"), vim.fn.line("'>"), 0
-                for line = first, last do
-                    local col = vim.fn.getline(line):find(delim, 1, true)
-                    if col and col > stop then stop = col end
-                end
-                local pattern = '%s*' .. vim.pesc(delim) .. '%s*'
-                for line = first, last do
-                    local text = vim.fn.getline(line)
-                    local col = text:find(delim, 1, true)
-                    if col then
-                        local pad = (' '):rep(stop + 1 - col)
-                        vim.fn.setline(line, (text:gsub(pattern, pad .. delim .. ' ', 1)))
+                local first, last = vim.fn.line("'<"), vim.fn.line("'>")
+                local esc, max, buf = vim.pesc(delim), 0, {}
+                for l = first, last do
+                    local text = vim.fn.getline(l)
+                    local left, right = text:match("^(.-)%s*" .. esc .. "%s*(.-)$")
+                    if left then
+                        left = left:gsub("%s+$", "")
+                        buf[#buf + 1] = { idx = l, left = left, right = right }
+                        if #left > max then max = #left end
                     end
+                end
+                for _, s in ipairs(buf) do
+                    local pad = (" "):rep(max - #s.left + 1)
+                    vim.fn.setline(s.idx, s.left .. pad .. delim .. " " .. s.right)
                 end
             end
             vim.api.nvim_create_user_command('Align', function(o) align(o.args) end, { range = true, nargs = 1 })
