@@ -13,28 +13,33 @@
     programs.neovim = {
         enable = true;
         extraLuaConfig = ''
-            vim.opt.expandtab = true
-            vim.opt.tabstop = 4
-            vim.opt.shiftwidth = 4
+            vim.opt.autoindent     = false
+            vim.opt.clipboard      = "unnamedplus"
+            vim.opt.cindent        = false
+            vim.opt.cursorline     = true
+            vim.opt.expandtab      = true
+            vim.opt.hlsearch       = false
+            vim.opt.ignorecase     = true
+            vim.opt.number         = true
+            vim.opt.relativenumber = true
+            vim.opt.shiftwidth     = 4
+            vim.opt.smartindent    = false
+            vim.opt.smartcase      = true
+            vim.opt.swapfile       = false
+            vim.opt.tabstop        = 4
+            vim.opt.wrap           = false
 
-            vim.opt.autoindent = false
-            vim.opt.smartindent = false
-            vim.opt.cindent = false
             vim.cmd("filetype indent off")
             vim.cmd("autocmd FileType * setlocal formatoptions-=cro") -- disable automatic commenting on newline
 
-            vim.opt.ignorecase = true
-            vim.opt.smartcase = true
+            vim.keymap.set("i" , "<C-c>" , "<Esc>")
+            vim.keymap.set("n" , "<C-d>" , "<C-d>zz")
+            vim.keymap.set("n" , "<C-e>" , "<nop>")
+            vim.keymap.set("n" , "<C-u>" , "<C-u>zz")
+            vim.keymap.set("n" , "Q"     , "<nop>")
 
-            vim.keymap.set("i", "<C-c>", "<Esc>")
-            vim.keymap.set("n", "<C-e>", "<nop>")
-            vim.keymap.set("n", "Q", "<nop>")
-
-            vim.opt.clipboard = "unnamedplus"
-            vim.opt.hlsearch = false
-            vim.opt.number = true
-            vim.opt.swapfile = false
-            vim.opt.wrap = false
+            vim.api.nvim_set_hl(0, "LineNr"       , { fg = "#5f5f5f", bold = false })
+            vim.api.nvim_set_hl(0, "CursorLineNr" , { fg = "#ffffff", bold = true })
 
             -- tabs
 
@@ -49,10 +54,10 @@
                 return table.concat(t)
             end
             vim.opt.tabline = "%!v:lua.SimpleTabLine()"
-            vim.keymap.set("n", "<C-l>",  "gt", {silent = true, noremap = true})
-            vim.keymap.set("n", "<C-h>","gT", {silent = true, noremap = true})
+            vim.keymap.set("n", "<C-l>", "gt", {silent = true, noremap = true})
+            vim.keymap.set("n", "<C-h>", "gT", {silent = true, noremap = true})
 
-            -- file search
+            -- fuzzy file search
 
             local function pick_file()
                 local tmp = vim.fn.tempname()
@@ -70,27 +75,69 @@
             end
             vim.keymap.set("n", "<C-T>", pick_file, { silent = true, noremap = true })
 
-            -- align to delimiter
+            -- align after word
 
-            local function align(delim)
+            local function align_after(n)
+                n = tonumber(n) or 1
+                local rows, max_left = {}, 0
                 local first, last = vim.fn.line("'<"), vim.fn.line("'>")
-                local esc, max, buf = vim.pesc(delim), 0, {}
-                for l = first, last do
-                    local text = vim.fn.getline(l)
-                    local left, right = text:match("^(.-)%s*" .. esc .. "%s*(.-)$")
-                    if left then
-                        left = left:gsub("%s+$", "")
-                        buf[#buf + 1] = { idx = l, left = left, right = right }
-                        if #left > max then max = #left end
+                for line = first, last do
+                    local text, pos, count = vim.fn.getline(line), 1, 0
+                    repeat
+                        local start, stop = text:find("%S+", pos)
+                        if not start then break end
+                        count, pos = count + 1, stop + 1
+                    until count == n
+                    if count == n then
+                        local left  = text:sub(1, pos - 1):gsub("%s+$", "")
+                        local right = text:sub(pos):gsub("^%s+", "")
+                        rows[#rows + 1] = { idx = line, left = left, right = right }
+                        if #left > max_left then max_left = #left end
                     end
                 end
-                for _, s in ipairs(buf) do
-                    local pad = (" "):rep(max - #s.left + 1)
-                    vim.fn.setline(s.idx, s.left .. pad .. delim .. " " .. s.right)
-                end
+                local fmt = "%-" .. (max_left + 1) .. "s%s"
+                for _, row in ipairs(rows) do vim.fn.setline(row.idx, fmt:format(row.left, row.right)) end
             end
-            vim.api.nvim_create_user_command("Align", function(o) align(o.args) end, { range = true, nargs = 1 })
-            vim.cmd("cnoreabbrev aa Align")
+            vim.api.nvim_create_user_command("AlignAfter", function(o) align_after(o.args) end, { range = true, nargs = "?" })
+            vim.cmd("cnoreabbrev aa AlignAfter")
+
+            -- align delimiter
+
+            local function align_delim(delim, n)
+                n = tonumber(n) or 1
+                local esc, rows, max_left = vim.pesc(delim), {}, 0
+                local first, last = vim.fn.line("'<"), vim.fn.line("'>")
+                for line = first, last do
+                    local text, pos, count = vim.fn.getline(line), 1, 0
+                    while true do
+                        local start, stop = text:find("%s*" .. esc .. "%s*", pos)
+                        if not start then break end
+                        count, pos = count + 1, stop + 1
+                        if count == n then
+                            local left  = text:sub(1, start - 1):gsub("%s+$", "")
+                            local right = text:sub(stop + 1):gsub("^%s+", "")
+                            rows[#rows + 1] = { line, left, right }
+                            if #left > max_left then max_left = #left end
+                            break
+                        end
+                    end
+                end
+                local fmt = "%-" .. (max_left + 1) .. "s%s %s"
+                for _, r in ipairs(rows) do vim.fn.setline(r[1], fmt:format(r[2], delim, r[3])) end
+            end
+            vim.api.nvim_create_user_command("AlignDelim", function(o) align_delim(o.fargs[1], o.fargs[2]) end, { range = true, nargs = "+" })
+            vim.cmd("cnoreabbrev ad AlignDelim")
+
+            -- toggle relative line numbers
+
+            local function toggle_relative()
+                local rel = not vim.wo.relativenumber
+                vim.wo.relativenumber = rel
+                vim.api.nvim_set_hl(0, "LineNr"       , { fg = rel and "#5f5f5f" or "#ffffff" , bold = false })
+                vim.api.nvim_set_hl(0, "CursorLineNr" , { fg = "#ffffff"                      , bold = true })
+            end
+            vim.api.nvim_create_user_command("ToggleRelative", toggle_relative, {})
+            vim.cmd("cnoreabbrev rl ToggleRelative")
 
             -- toggle word wrap
 
