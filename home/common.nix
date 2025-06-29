@@ -13,29 +13,30 @@
     programs.neovim = {
         enable = true;
         extraLuaConfig = ''
-            vim.opt.clipboard = "unnamedplus"
-            vim.opt.cursorline = true
-            vim.opt.hlsearch = false
-            vim.opt.number = true
-            vim.opt.swapfile = false
-            vim.opt.wrap = false
-            vim.cmd("autocmd FileType * setlocal formatoptions-=cro") -- disable automatic commenting on newline
+            vim.opt.expandtab = true
+            vim.opt.tabstop = 4
+            vim.opt.shiftwidth = 4
 
             vim.opt.autoindent = false
             vim.opt.smartindent = false
             vim.opt.cindent = false
             vim.cmd("filetype indent off")
+            vim.cmd("autocmd FileType * setlocal formatoptions-=cro") -- disable automatic commenting on newline
 
             vim.opt.ignorecase = true
             vim.opt.smartcase = true
 
-            vim.opt.expandtab = true
-            vim.opt.tabstop = 4
-            vim.opt.shiftwidth = 4
-
             vim.keymap.set("i", "<C-c>", "<Esc>")
             vim.keymap.set("n", "<C-e>", "<nop>")
             vim.keymap.set("n", "Q", "<nop>")
+
+            vim.opt.clipboard = "unnamedplus"
+            vim.opt.hlsearch = false
+            vim.opt.number = true
+            vim.opt.swapfile = false
+            vim.opt.wrap = false
+
+            -- toggle word wrap
 
             local function toggle_word_wrap()
                 if vim.opt.wrap:get() then
@@ -46,8 +47,29 @@
                     print("word wrap enabled")
                 end
             end
-            vim.api.nvim_create_user_command('WW', toggle_word_wrap, {})
-            vim.cmd('cnoreabbrev ww WW')
+            vim.api.nvim_create_user_command('Wrap', toggle_word_wrap, {})
+            vim.cmd('cnoreabbrev ww Wrap')
+
+            -- align to delimiter
+
+            local function align(delim)
+                local first, last, stop = vim.fn.line("'<"), vim.fn.line("'>"), 0
+                for line = first, last do
+                    local col = vim.fn.getline(line):find(delim, 1, true)
+                    if col and col > stop then stop = col end
+                end
+                local pattern = '%s*' .. vim.pesc(delim) .. '%s*'
+                for line = first, last do
+                    local text = vim.fn.getline(line)
+                    local col = text:find(delim, 1, true)
+                    if col then
+                        local pad = (' '):rep(stop + 1 - col)
+                        vim.fn.setline(line, (text:gsub(pattern, pad .. delim .. ' ', 1)))
+                    end
+                end
+            end
+            vim.api.nvim_create_user_command('Align', function(o) align(o.args) end, { range = true, nargs = 1 })
+            vim.cmd('cnoreabbrev aa Align')
         '';
     };
 

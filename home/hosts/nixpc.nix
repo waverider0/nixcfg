@@ -11,11 +11,13 @@
             discord
             fzf
             gimp
+            godot
             keepassxc
             opentofu
             qbittorrent
             signal-desktop
             spotdl
+            spotify
             vlc
             vscodium
             wireshark
