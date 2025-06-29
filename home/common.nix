@@ -36,19 +36,39 @@
             vim.opt.swapfile = false
             vim.opt.wrap = false
 
-            -- toggle word wrap
+            -- tabs
 
-            local function toggle_wrap()
-                if vim.opt.wrap:get() then
-                    vim.opt.wrap = false
-                    print("word wrap disabled")
-                else
-                    vim.opt.wrap = true
-                    print("word wrap enabled")
+            vim.o.showtabline = 2
+            local fn = vim.fn
+            function _G.SimpleTabLine()
+                local t, cur = {}, fn.tabpagenr()
+                for i = 1, fn.tabpagenr("$") do
+                    local name = fn.fnamemodify(fn.bufname(fn.tabpagebuflist(i)[fn.tabpagewinnr(i)]), ":t")
+                    t[#t + 1] = (i == cur and "%#TabLineSel#" or "%#TabLine#") .. " " .. i .. ":" .. (name ~= "" and name or "[No Name]") .. " "
                 end
+                return table.concat(t)
             end
-            vim.api.nvim_create_user_command('Wrap', toggle_wrap, {})
-            vim.cmd('cnoreabbrev ww Wrap')
+            vim.o.tabline = "%!v:lua.SimpleTabLine()"
+            vim.keymap.set("n", "<C-l>",  "gt", {silent = true, noremap = true})
+            vim.keymap.set("n", "<C-h>","gT", {silent = true, noremap = true})
+
+            -- file search
+
+            local function pick_file()
+                local tmp = vim.fn.tempname()
+                vim.cmd("botright 25new | startinsert")
+                local win = vim.api.nvim_get_current_win()
+                vim.fn.termopen({"bash","-c", "find . -type f 2>/dev/null | fzf --bind=ctrl-n:down,ctrl-p:up > "..vim.fn.shellescape(tmp)}, {
+                    on_exit = function()
+                        local sel = vim.fn.readfile(tmp)[1] or "" ; vim.fn.delete(tmp)
+                        vim.schedule(function()
+                            pcall(vim.api.nvim_win_close, win, true)
+                            if sel ~= "" then vim.cmd("tab drop"..vim.fn.fnameescape(sel)) end
+                        end)
+                    end
+                })
+            end
+            vim.keymap.set("n", "<C-T>", pick_file, { silent = true, noremap = true })
 
             -- align to delimiter
 
@@ -69,8 +89,22 @@
                     vim.fn.setline(s.idx, s.left .. pad .. delim .. " " .. s.right)
                 end
             end
-            vim.api.nvim_create_user_command('Align', function(o) align(o.args) end, { range = true, nargs = 1 })
-            vim.cmd('cnoreabbrev aa Align')
+            vim.api.nvim_create_user_command("Align", function(o) align(o.args) end, { range = true, nargs = 1 })
+            vim.cmd("cnoreabbrev aa Align")
+
+            -- toggle word wrap
+
+            local function toggle_wrap()
+                if vim.opt.wrap:get() then
+                    vim.opt.wrap = false
+                    print("word wrap disabled")
+                else
+                    vim.opt.wrap = true
+                    print("word wrap enabled")
+                end
+            end
+            vim.api.nvim_create_user_command("Wrap", toggle_wrap, {})
+            vim.cmd("cnoreabbrev ww Wrap")
         '';
     };
 
@@ -102,13 +136,12 @@
             export PS1=$'%n@%m:%{\e[01;32m%}%~%{\e[0m%}$ '
             export MANPAGER='nvim +Man!'
 
+            alias vi='nvim'
             set -o vi
+
             setopt EXTENDED_GLOB
             setopt GLOBDOTS
             setopt NULL_GLOB
-
-            alias code='codium'
-            alias vi='nvim'
 
             fcd() {
                 local dir

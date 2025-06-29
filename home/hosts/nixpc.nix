@@ -19,7 +19,6 @@
             spotdl
             spotify
             vlc
-            vscodium
             wireshark
         ];
 

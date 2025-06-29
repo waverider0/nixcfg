@@ -15,11 +15,11 @@
         homeConfigurations = {
             "allen@mac" = home-manager.lib.homeManagerConfiguration {
                 pkgs = import nixpkgs { system = "aarch64-darwin"; config.allowUnfree = true; };
-                modules = [ ./home/common.nix ./home/pc.nix ./home/hosts/mac.nix agenix.homeManagerModules.default ];
+                modules = [ ./home/common.nix ./home/hosts/mac.nix agenix.homeManagerModules.default ];
             };
             "allen@nixpc" = home-manager.lib.homeManagerConfiguration {
                 pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
-                modules = [ ./home/common.nix ./home/pc.nix ./home/hosts/nixpc.nix agenix.homeManagerModules.default ];
+                modules = [ ./home/common.nix ./home/hosts/nixpc.nix agenix.homeManagerModules.default ];
             };
             "user@xmr" = home-manager.lib.homeManagerConfiguration {
                 pkgs = import nixpkgs { system = "x86_64-linux"; };

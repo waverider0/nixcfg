@@ -26,8 +26,6 @@
     home.file = {
         ".ssh/github.pub".source = ../../secrets/github.pub;
         ".ssh/xmr.pub".source = ../../secrets/xmr.pub;
-        "Library/Application Support/VSCodium/User/keybindings.json".text = builtins.toJSON config.programs.vscode.profiles.default.keybindings;
-        "Library/Application Support/VSCodium/User/settings.json".text = builtins.toJSON config.programs.vscode.profiles.default.userSettings;
     };
 
     programs.tmux.extraConfig = lib.mkAfter ''
