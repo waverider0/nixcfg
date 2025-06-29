@@ -38,7 +38,7 @@
 
             -- tabs
 
-            vim.o.showtabline = 2
+            vim.opt.showtabline = 2
             local fn = vim.fn
             function _G.SimpleTabLine()
                 local t, cur = {}, fn.tabpagenr()
@@ -48,7 +48,7 @@
                 end
                 return table.concat(t)
             end
-            vim.o.tabline = "%!v:lua.SimpleTabLine()"
+            vim.opt.tabline = "%!v:lua.SimpleTabLine()"
             vim.keymap.set("n", "<C-l>",  "gt", {silent = true, noremap = true})
             vim.keymap.set("n", "<C-h>","gT", {silent = true, noremap = true})
 
