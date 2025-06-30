@@ -33,13 +33,13 @@
             vim.cmd("filetype indent off")
             vim.cmd("autocmd FileType * setlocal formatoptions-=cro") -- disable automatic commenting on newline
 
-            vim.keymap.set("i" , "<C-c>"      , "<Esc>")
-            vim.keymap.set("n" , "<C-d>"      , "<C-d>zz")
-            vim.keymap.set("n" , "<C-e>"      , "<nop>")
-            vim.keymap.set("n" , "<C-u>"      , "<C-u>zz")
-            vim.keymap.set("n" , "<leader>wq" , ":wq<CR>")
-            vim.keymap.set("n" , "<leader>q"  , ":q<CR>")
-            vim.keymap.set("n" , "Q"          , "<nop>")
+            vim.keymap.set("i"       , "<C-c>"      , "<Esc>")
+            vim.keymap.set("n"       , "<C-e>"      , "<nop>")
+            vim.keymap.set("n"       , "Q"          , "<nop>")
+            vim.keymap.set("n"       , "<leader>wq" , ":wq<CR>")
+            vim.keymap.set("n"       , "<leader>q"  , ":q<CR>")
+            vim.keymap.set({"n","v"} , "<C-d>"      , "<C-d>zz")
+            vim.keymap.set({"n","v"} , "<C-u>"      , "<C-u>zz")
 
             vim.api.nvim_set_hl(0, "LineNr"       , { fg = "#5f5f5f", bold = false })
             vim.api.nvim_set_hl(0, "CursorLineNr" , { fg = "#ffffff", bold = true })
@@ -56,7 +56,10 @@
                     if fn.getbufvar(buf, "&filetype") == "netrw" then
                         name = fn.fnamemodify(fn.getbufvar(buf, "netrw_curdir"), ":t") .. "/"
                     else
-                        name = fn.fnamemodify(fn.bufname(buf), ":t")
+                        local path   = fn.fnamemodify(fn.bufname(buf), ":p")
+                        local parent = fn.fnamemodify(path, ":h:t")
+                        local file   = fn.fnamemodify(path, ":t")
+                        name = (parent ~= "" and parent ~= "." and parent .. "/" or "") .. file
                     end
                     if name == "" then name = "[No Name]" end
                     t[#t + 1] = (i == cur and "%#TabLineSel#" or "%#TabLine#") .. " " .. i .. ":" .. name .. " "
