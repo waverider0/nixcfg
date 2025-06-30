@@ -13,6 +13,7 @@
     programs.neovim = {
         enable = true;
         extraLuaConfig = ''
+            vim.g.mapleader        = " "
             vim.opt.autoindent     = false
             vim.opt.clipboard      = "unnamedplus"
             vim.opt.cindent        = false
@@ -32,11 +33,13 @@
             vim.cmd("filetype indent off")
             vim.cmd("autocmd FileType * setlocal formatoptions-=cro") -- disable automatic commenting on newline
 
-            vim.keymap.set("i" , "<C-c>" , "<Esc>")
-            vim.keymap.set("n" , "<C-d>" , "<C-d>zz")
-            vim.keymap.set("n" , "<C-e>" , "<nop>")
-            vim.keymap.set("n" , "<C-u>" , "<C-u>zz")
-            vim.keymap.set("n" , "Q"     , "<nop>")
+            vim.keymap.set("i" , "<C-c>"      , "<Esc>")
+            vim.keymap.set("n" , "<C-d>"      , "<C-d>zz")
+            vim.keymap.set("n" , "<C-e>"      , "<nop>")
+            vim.keymap.set("n" , "<C-u>"      , "<C-u>zz")
+            vim.keymap.set("n" , "<leader>wq" , ":wq<CR>")
+            vim.keymap.set("n" , "<leader>q"  , ":q<CR>")
+            vim.keymap.set("n" , "Q"          , "<nop>")
 
             vim.api.nvim_set_hl(0, "LineNr"       , { fg = "#5f5f5f", bold = false })
             vim.api.nvim_set_hl(0, "CursorLineNr" , { fg = "#ffffff", bold = true })
@@ -131,7 +134,7 @@
                 for _, row in ipairs(rows) do vim.fn.setline(row.idx, fmt:format(row.left, row.right)) end
             end
             vim.api.nvim_create_user_command("AlignAfter", function(o) align_after(o.args) end, { range = true, nargs = "?" })
-            vim.cmd("cnoreabbrev aa AlignAfter")
+            vim.keymap.set("v", "<leader>aa", ":'<,'>AlignAfter<Space>")
 
             -- align delimiter
 
@@ -158,7 +161,7 @@
                 for _, r in ipairs(rows) do vim.fn.setline(r[1], fmt:format(r[2], delim, r[3])) end
             end
             vim.api.nvim_create_user_command("AlignDelim", function(o) align_delim(o.fargs[1], o.fargs[2]) end, { range = true, nargs = "+" })
-            vim.cmd("cnoreabbrev ad AlignDelim")
+            vim.keymap.set("v", "<leader>ad", ":'<,'>AlignDelim<Space>")
 
             -- toggle relative line numbers
 
@@ -169,7 +172,7 @@
                 vim.api.nvim_set_hl(0, "CursorLineNr" , { fg = "#ffffff"                      , bold = true })
             end
             vim.api.nvim_create_user_command("ToggleRelative", toggle_relative, {})
-            vim.cmd("cnoreabbrev rl ToggleRelative")
+            vim.keymap.set("n", "<leader>rl", ":ToggleRelative<CR>")
 
             -- toggle word wrap
 
@@ -183,7 +186,7 @@
                 end
             end
             vim.api.nvim_create_user_command("Wrap", toggle_wrap, {})
-            vim.cmd("cnoreabbrev ww Wrap")
+            vim.keymap.set("n", "<leader>ww", ":Wrap<CR>")
         '';
     };
 
