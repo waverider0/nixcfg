@@ -11,7 +11,6 @@
             discord
             fzf
             gimp
-            godot
             keepassxc
             opentofu
             qbittorrent
