@@ -48,12 +48,20 @@
             function _G.SimpleTabLine()
                 local t, cur = {}, fn.tabpagenr()
                 for i = 1, fn.tabpagenr("$") do
-                    local name = fn.fnamemodify(fn.bufname(fn.tabpagebuflist(i)[fn.tabpagewinnr(i)]), ":t")
-                    t[#t + 1] = (i == cur and "%#TabLineSel#" or "%#TabLine#") .. " " .. i .. ":" .. (name ~= "" and name or "[No Name]") .. " "
+                    local buf = fn.tabpagebuflist(i)[fn.tabpagewinnr(i)]
+                    local name
+                    if fn.getbufvar(buf, "&filetype") == "netrw" then
+                        name = fn.fnamemodify(fn.getbufvar(buf, "netrw_curdir"), ":t") .. "/"
+                    else
+                        name = fn.fnamemodify(fn.bufname(buf), ":t")
+                    end
+                    if name == "" then name = "[No Name]" end
+                    t[#t + 1] = (i == cur and "%#TabLineSel#" or "%#TabLine#") .. " " .. i .. ":" .. name .. " "
                 end
                 return table.concat(t)
             end
             vim.opt.tabline = "%!v:lua.SimpleTabLine()"
+            vim.cmd("autocmd FileType netrw nnoremap <buffer> <C-l> gt")
             vim.keymap.set("n", "<C-l>", "gt", {silent = true, noremap = true})
             vim.keymap.set("n", "<C-h>", "gT", {silent = true, noremap = true})
 
@@ -63,17 +71,41 @@
                 local tmp = vim.fn.tempname()
                 vim.cmd("botright 25new | startinsert")
                 local win = vim.api.nvim_get_current_win()
-                vim.fn.termopen({"bash","-c", "find . -type f 2>/dev/null | fzf --bind=ctrl-n:down,ctrl-p:up > "..vim.fn.shellescape(tmp)}, {
+                vim.fn.termopen({ "bash","-c", "find . -type f 2>/dev/null | fzf --bind=ctrl-n:down,ctrl-p:up > "..vim.fn.shellescape(tmp) }, {
                     on_exit = function()
                         local sel = vim.fn.readfile(tmp)[1] or "" ; vim.fn.delete(tmp)
                         vim.schedule(function()
                             pcall(vim.api.nvim_win_close, win, true)
-                            if sel ~= "" then vim.cmd("tab drop"..vim.fn.fnameescape(sel)) end
+                            if sel ~= "" then vim.cmd("tab drop "..vim.fn.fnameescape(sel)) end
                         end)
                     end
                 })
             end
             vim.keymap.set("n", "<C-T>", pick_file, { silent = true, noremap = true })
+
+            -- fuzzy directory search
+
+            local function pick_dir()
+                local tmp = vim.fn.tempname()
+                vim.cmd("botright 25new | startinsert")
+                local win = vim.api.nvim_get_current_win()
+                vim.fn.termopen({ "bash","-c","find . -type d -not -path '*/\\.git/*' 2>/dev/null | fzf --bind=ctrl-n:down,ctrl-p:up > "..vim.fn.shellescape(tmp) }, {
+                    on_exit = function()
+                        local sel = (vim.fn.readfile(tmp)[1] or "") ; vim.fn.delete(tmp)
+                        vim.schedule(function()
+                            pcall(vim.api.nvim_win_close, win, true)
+                            if sel == "" then return end
+                            local dir = vim.fn.fnamemodify(sel, ":p")
+                            for t = 1, vim.fn.tabpagenr("$") do
+                                local b = vim.fn.tabpagebuflist(t)[vim.fn.tabpagewinnr(t)]
+                                if vim.fn.getbufvar(b, "&filetype") == "netrw" and vim.fn.fnamemodify(vim.fn.getbufvar(b, "netrw_curdir"), ":p") == dir then vim.cmd(t.."tabnext") ; return end
+                            end
+                            vim.cmd("tabnew "..vim.fn.fnameescape(dir))
+                        end)
+                    end}
+                )
+            end
+            vim.keymap.set("n", "<C-F>", pick_dir, { silent = true, noremap = true })
 
             -- align after word
 
@@ -190,19 +222,19 @@
             setopt GLOBDOTS
             setopt NULL_GLOB
 
-            fcd() {
-                local dir
-                dir=$(find . -type d 2> /dev/null | fzf) && cd "$dir"
-                zle reset-prompt; zle -R
-            }
-            zle -N fcd; bindkey '^F' fcd
-
             fvi() {
                 local file
                 file=$(find . -type f 2> /dev/null | fzf) && vi "$file"
                 zle reset-prompt; zle -R
             }
             zle -N fvi; bindkey '^T' fvi
+
+            fcd() {
+                local dir
+                dir=$(find . -type d 2> /dev/null | fzf) && cd "$dir"
+                zle reset-prompt; zle -R
+            }
+            zle -N fcd; bindkey '^F' fcd
         '';
     };
 }
