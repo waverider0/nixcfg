@@ -76,7 +76,7 @@
                         local sel = vim.fn.readfile(tmp)[1] or "" ; vim.fn.delete(tmp)
                         vim.schedule(function()
                             pcall(vim.api.nvim_win_close, win, true)
-                            if sel ~= "" then vim.cmd("tab drop "..vim.fn.fnameescape(sel)) end
+                            if sel ~= "" then vim.cmd("tab drop"..vim.fn.fnameescape(sel)) end
                         end)
                     end
                 })
@@ -100,7 +100,7 @@
                                 local b = vim.fn.tabpagebuflist(t)[vim.fn.tabpagewinnr(t)]
                                 if vim.fn.getbufvar(b, "&filetype") == "netrw" and vim.fn.fnamemodify(vim.fn.getbufvar(b, "netrw_curdir"), ":p") == dir then vim.cmd(t.."tabnext") ; return end
                             end
-                            vim.cmd("tabnew "..vim.fn.fnameescape(dir))
+                            vim.cmd("tabnew"..vim.fn.fnameescape(dir))
                         end)
                     end}
                 )
