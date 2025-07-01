@@ -8,6 +8,10 @@
     age = {
         identityPaths = [ ../../secrets/id ];
         secrets = {
+            ".kdbx.kdbx.age" = {
+                file = ../../secrets/.kdbx.kdbx.age;
+                path = "/Users/allen/.kdbx.kdbx";
+            };
             "github.age" = {
                 file = ../../secrets/github.age;
                 path = "/Users/allen/.ssh/github";
@@ -15,10 +19,6 @@
             "xmr.age" = {
                 file = ../../secrets/xmr.age;
                 path = "/Users/allen/.ssh/xmr";
-            };
-            ".kdbx.kdbx.age" = {
-                file = ../../secrets/.kdbx.kdbx.age;
-                path = "/Users/allen/.kdbx.kdbx";
             };
         };
     };

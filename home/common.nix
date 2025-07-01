@@ -31,16 +31,16 @@
             vim.opt.tabstop        = 4
             vim.opt.wrap           = false
 
+            vim.keymap.set("i"           , "<C-c>"      , "<Esc>")
+            vim.keymap.set("n"           , "<C-e>"      , "<nop>")
+            vim.keymap.set("n"           , "Q"          , "<nop>")
+            vim.keymap.set({"n","v"}     , "<C-d>"      , "<C-d>zz")
+            vim.keymap.set({"n","v"}     , "<C-u>"      , "<C-u>zz")
+            vim.keymap.set({"n","v"}     , "<leader>ex" , ":Ex<CR>")
+            vim.keymap.set({"n","v","i"} , "<C-q>"      , function() vim.cmd(#vim.api.nvim_list_wins() == 1 and "q" or "bd") end)
+
             vim.cmd("filetype indent off")
             vim.cmd("autocmd FileType * setlocal formatoptions-=cro") -- disable automatic commenting on newline
-
-            vim.keymap.set("i"       , "<C-c>"      , "<Esc>")
-            vim.keymap.set("n"       , "<C-e>"      , "<nop>")
-            vim.keymap.set("n"       , "<C-q>"      , function() vim.cmd(#vim.api.nvim_list_wins() == 1 and "q" or "bd") end, { noremap = true, silent = true })
-            vim.keymap.set("n"       , "<leader>ex" , ":Ex<CR>")
-            vim.keymap.set("n"       , "Q"          , "<nop>")
-            vim.keymap.set({"n","v"} , "<C-d>"      , "<C-d>zz")
-            vim.keymap.set({"n","v"} , "<C-u>"      , "<C-u>zz")
 
             vim.api.nvim_set_hl(0, "LineNr"       , { fg = "#5f5f5f", bold = false })
             vim.api.nvim_set_hl(0, "CursorLineNr" , { fg = "#ffffff", bold = true })
@@ -69,8 +69,8 @@
             end
             vim.opt.tabline = "%!v:lua.SimpleTabLine()"
             vim.cmd("autocmd FileType netrw nnoremap <buffer> <C-l> gt")
-            vim.keymap.set("n", "<C-l>", "gt", {silent = true, noremap = true})
-            vim.keymap.set("n", "<C-h>", "gT", {silent = true, noremap = true})
+            vim.keymap.set({"n","v","i"}, "<C-l>", function() vim.cmd.normal("gt") end)
+            vim.keymap.set({"n","v","i"}, "<C-h>", function() vim.cmd.normal("gT") end)
 
             -- fuzzy file search
 
@@ -88,7 +88,7 @@
                     end
                 })
             end
-            vim.keymap.set("n", "<C-T>", pick_file, { silent = true, noremap = true })
+            vim.keymap.set({"n","v","i"}, "<C-t>", pick_file)
 
             -- fuzzy directory search
 
@@ -112,7 +112,7 @@
                     end}
                 )
             end
-            vim.keymap.set("n", "<C-F>", pick_dir, { silent = true, noremap = true })
+            vim.keymap.set({"n","v","i"}, "<C-f>", pick_dir)
 
             -- align after word
 
@@ -142,30 +142,60 @@
 
             -- align delimiter
 
-            local function align_delim(delim, n)
-                n = tonumber(n) or 1
-                local esc, rows, max_left = vim.pesc(delim), {}, 0
-                local first, last = vim.fn.line("'<"), vim.fn.line("'>")
-                for line = first, last do
-                    local text, pos, count = vim.fn.getline(line), 1, 0
-                    while true do
-                        local start, stop = text:find("%s*" .. esc .. "%s*", pos)
-                        if not start then break end
-                        count, pos = count + 1, stop + 1
-                        if count == n then
-                            local left  = text:sub(1, start - 1):gsub("%s+$", "")
-                            local right = text:sub(stop + 1):gsub("^%s+", "")
-                            rows[#rows + 1] = { line, left, right }
-                            if #left > max_left then max_left = #left end
-                            break
+            local function nth_top(line, delim, n)
+                local len, depth, quote, esc, hits = #delim, 0, nil, false, {}
+                for i = 1, #line do
+                    local c = line:sub(i, i)
+                    if quote then
+                        esc = c == "\\" and not esc
+                        if c == quote and not esc then quote, esc = nil, false end
+                    else
+                        if c == '"' or c == "'"       then quote = c
+                        elseif c == '(' or c == '{' or c == '[' then depth = depth + 1
+                        elseif c == ')' or c == '}' or c == ']' then depth = depth - 1
+                        elseif line:sub(i, i + len - 1) == delim then
+                            (hits[depth] or (function() local t = {}; hits[depth] = t; return t end)())[ # (hits[depth] or {}) + 1 ] = i
+                            i = i + len - 1
                         end
                     end
                 end
-                local fmt = "%-" .. (max_left + 1) .. "s%s %s"
-                for _, r in ipairs(rows) do vim.fn.setline(r[1], fmt:format(r[2], delim, r[3])) end
+                local min_d = math.huge; for d in pairs(hits) do if d < min_d then min_d = d end end
+                local at_min = hits[min_d]; if not at_min then return end
+                return at_min[n], min_d
             end
-            vim.api.nvim_create_user_command("AlignDelim", function(o) align_delim(o.fargs[1], o.fargs[2]) end, { range = true, nargs = "+" })
-            vim.keymap.set("v", "<leader>ad", ":'<,'>AlignDelim<Space>")
+
+            local function align_delim(delim)
+                local buf, first, last = 0, vim.fn.line("'<") - 1, vim.fn.line("'>")
+                local lines = vim.api.nvim_buf_get_lines(buf, first, last, false)
+                local changed = false
+                for n = 1, 99 do
+                    local rows, min_d, width = {}, math.huge, 0
+                    for i, ln in ipairs(lines) do
+                        local p, d = nth_top(ln, delim, n)
+                        if p then
+                            rows[#rows + 1] = {i = i, p = p, d = d}
+                            if d < min_d then min_d = d end
+                            local left = ln:sub(1, p - 1):gsub("%s+$", "")
+                            if #left > width then width = #left end
+                        end
+                    end
+                    if width == 0 then break end
+                    local fmt = "%-" .. (width + 1) .. "s%s %s"
+                    for _, r in ipairs(rows) do
+                        if r.d == min_d then
+                            local ln = lines[r.i]
+                            local left  = ln:sub(1, r.p - 1):gsub("%s+$", "")
+                            local right = ln:sub(r.p + #delim):gsub("^%s+", "")
+                            lines[r.i] = string.format(fmt, left, delim, right)
+                            changed = true
+                        end
+                    end
+                end
+                if changed then vim.api.nvim_buf_set_lines(buf, first, last, false, lines) end
+            end
+
+            vim.api.nvim_create_user_command("AlignDelim", function(o) align_delim(o.fargs[1]) end, {range = true, nargs = 1})
+            vim.keymap.set("v", "<leader>ad", ":'<,'>AlignDelim ")
 
             -- toggle relative line numbers
 
@@ -176,7 +206,7 @@
                 vim.api.nvim_set_hl(0, "CursorLineNr" , { fg = "#ffffff"                      , bold = true })
             end
             vim.api.nvim_create_user_command("ToggleRelative", toggle_relative, {})
-            vim.keymap.set("n", "<leader>rl", ":ToggleRelative<CR>")
+            vim.keymap.set({"n","v"}, "<leader>rl", ":ToggleRelative<CR>")
 
             -- toggle word wrap
 
@@ -190,7 +220,7 @@
                 end
             end
             vim.api.nvim_create_user_command("Wrap", toggle_wrap, {})
-            vim.keymap.set("n", "<leader>ww", ":Wrap<CR>")
+            vim.keymap.set({"n","v"}, "<leader>ww", ":Wrap<CR>")
         '';
     };
 
