@@ -15,8 +15,9 @@
         extraLuaConfig = ''
             vim.g.mapleader        = " "
             vim.opt.autoindent     = false
-            vim.opt.clipboard      = "unnamedplus"
             vim.opt.cindent        = false
+            vim.opt.clipboard      = "unnamedplus"
+            vim.opt.confirm        = true
             vim.opt.cursorline     = true
             vim.opt.expandtab      = true
             vim.opt.hlsearch       = false
@@ -37,7 +38,8 @@
             vim.keymap.set("n"       , "<C-e>"      , "<nop>")
             vim.keymap.set("n"       , "Q"          , "<nop>")
             vim.keymap.set("n"       , "<leader>ex" , ":Ex<CR>")
-            vim.keymap.set("n"       , "<leader>q"  , ":q<CR>")
+            vim.keymap.set("n"       , "<leader>q"  , function() vim.cmd(#vim.api.nvim_list_wins() == 1 and "q" or "bd") end, { noremap=true, silent=true })
+            vim.keymap.set("n"       , "<leader>s"  , ":w<CR>")
             vim.keymap.set("n"       , "<leader>wq" , ":wq<CR>")
             vim.keymap.set({"n","v"} , "<C-d>"      , "<C-d>zz")
             vim.keymap.set({"n","v"} , "<C-u>"      , "<C-u>zz")
