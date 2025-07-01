@@ -159,9 +159,9 @@
                         end
                     end
                 end
-                local min_d = math.huge; for d in pairs(hits) do if d < min_d then min_d = d end end
-                local at_min = hits[min_d]; if not at_min then return end
-                return at_min[n], min_d
+                local min_depth = math.huge; for depth in pairs(hits) do if depth < min_depth then min_depth = depth end end
+                local at_min = hits[min_depth]; if not at_min then return end
+                return at_min[n], min_depth
             end
 
             local function align_delim(delim)
@@ -169,24 +169,24 @@
                 local lines = vim.api.nvim_buf_get_lines(buf, first, last, false)
                 local changed = false
                 for n = 1, 99 do
-                    local rows, min_d, width = {}, math.huge, 0
-                    for i, ln in ipairs(lines) do
-                        local p, d = nth_top(ln, delim, n)
-                        if p then
-                            rows[#rows + 1] = {i = i, p = p, d = d}
-                            if d < min_d then min_d = d end
-                            local left = ln:sub(1, p - 1):gsub("%s+$", "")
+                    local rows, min_depth, width = {}, math.huge, 0
+                    for i, line in ipairs(lines) do
+                        local pos, depth = nth_top(line, delim, n)
+                        if pos then
+                            rows[#rows + 1] = {i = i, pos = pos, depth = depth}
+                            if depth < min_depth then min_depth = depth end
+                            local left = line:sub(1, pos - 1):gsub("%s+$", "")
                             if #left > width then width = #left end
                         end
                     end
                     if width == 0 then break end
                     local fmt = "%-" .. (width + 1) .. "s%s %s"
-                    for _, r in ipairs(rows) do
-                        if r.d == min_d then
-                            local ln = lines[r.i]
-                            local left  = ln:sub(1, r.p - 1):gsub("%s+$", "")
-                            local right = ln:sub(r.p + #delim):gsub("^%s+", "")
-                            lines[r.i] = string.format(fmt, left, delim, right)
+                    for _, row in ipairs(rows) do
+                        if row.depth == min_depth then
+                            local line = lines[row.i]
+                            local left  = line:sub(1, row.pos - 1):gsub("%s+$", "")
+                            local right = line:sub(row.pos + #delim):gsub("^%s+", "")
+                            lines[row.i] = string.format(fmt, left, delim, right)
                             changed = true
                         end
                     end
