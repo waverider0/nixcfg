@@ -36,8 +36,9 @@
 
             vim.keymap.set("i"       , "<C-c>"      , "<Esc>")
             vim.keymap.set("n"       , "<C-e>"      , "<nop>")
+            vim.keymap.set("n"       , "<C-q>"      , function() vim.cmd(#vim.api.nvim_list_wins() == 1 and "q" or "bd") end, { noremap = true, silent = true })
             vim.keymap.set("n"       , "<leader>ex" , ":Ex<CR>")
-            vim.keymap.set("n"       , "Q"          , function() vim.cmd(#vim.api.nvim_list_wins() == 1 and "q" or "bd") end, { noremap = true, silent = true })
+            vim.keymap.set("n"       , "Q"          , "<nop>")
             vim.keymap.set({"n","v"} , "<C-d>"      , "<C-d>zz")
             vim.keymap.set({"n","v"} , "<C-u>"      , "<C-u>zz")
 
