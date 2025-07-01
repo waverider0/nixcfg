@@ -36,8 +36,9 @@
             vim.keymap.set("i"       , "<C-c>"      , "<Esc>")
             vim.keymap.set("n"       , "<C-e>"      , "<nop>")
             vim.keymap.set("n"       , "Q"          , "<nop>")
-            vim.keymap.set("n"       , "<leader>wq" , ":wq<CR>")
+            vim.keymap.set("n"       , "<leader>ex" , ":Ex<CR>")
             vim.keymap.set("n"       , "<leader>q"  , ":q<CR>")
+            vim.keymap.set("n"       , "<leader>wq" , ":wq<CR>")
             vim.keymap.set({"n","v"} , "<C-d>"      , "<C-d>zz")
             vim.keymap.set({"n","v"} , "<C-u>"      , "<C-u>zz")
 
