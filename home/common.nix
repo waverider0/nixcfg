@@ -4,6 +4,8 @@
     home.stateVersion = "25.05";
     programs.home-manager.enable = true;
 
+    programs.alacritty.enable = true;
+
     programs.git = {
         enable    = true;
         userEmail = "<waverider0@users.noreply.github.com>";
@@ -41,8 +43,8 @@
             vim.cmd("filetype indent off")
             vim.cmd("autocmd FileType * setlocal formatoptions-=cro") -- disable automatic commenting on newline
 
-            vim.api.nvim_set_hl(0, "LineNr"       , { fg = "#5f5f5f", bold = false })
-            vim.api.nvim_set_hl(0, "CursorLineNr" , { fg = "#ffffff", bold = true })
+            vim.api.nvim_set_hl(0 , "LineNr"       , { fg = "#5f5f5f", bold = false })
+            vim.api.nvim_set_hl(0 , "CursorLineNr" , { fg = "#ffffff", bold = true })
 
             -- TABS
 
@@ -236,18 +238,21 @@
         extraConfig = ''
             unbind C-b
             set -g prefix `
-            bind-key e send-prefix
-            bind-key Enter new-session
 
-            set-option -g set-clipboard on
-            set-option -g history-limit 5000
+            bind c new-window -c "#{pane_current_path}"
+            bind e send-prefix
+            bind Enter new-session
+
             set -g base-index 1
+            set -g detach-on-destroy off
+            set -g history-limit 5000
+            set -g set-clipboard on
 
-            setw -g mode-keys vi
+            set -g -w mode-keys vi
             bind -T copy-mode-vi v send-keys -X begin-selection
 
             set -g status-style bg=colour235,fg=colour250
-            setw -g window-status-current-style fg=colour2,bold
+            set -g -w window-status-current-style fg=colour2,bold
         '';
     };
 
@@ -279,6 +284,11 @@
                 zle reset-prompt; zle -R
             }
             zle -N fcd; bindkey '^F' fcd
+
+            # autostart tmux in interactive top level shell
+            if [[ $- == *i* ]] && [[ -z "$TMUX" ]] && command -v tmux >/dev/null; then
+                exec tmux
+            fi
         '';
     };
 }

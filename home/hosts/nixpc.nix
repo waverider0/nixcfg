@@ -22,9 +22,9 @@
         ];
 
         file = {
-            ".ssh/config".source     = ../../secrets/ssh_config;
+            ".ssh/config".source = ../../secrets/ssh_config;
             ".ssh/github.pub".source = ../../secrets/github.pub;
-            ".ssh/xmr.pub".source    = ../../secrets/xmr.pub;
+            ".ssh/xmr.pub".source = ../../secrets/xmr.pub;
         };
     };
 
@@ -56,10 +56,15 @@
             Keyboard.RepeatDelay = 300;
             Keyboard.RepeatRate = 50;
         };
+        kdeglobals.General = {
+            TerminalApplication = "alacritty";
+            TerminalService = "alacritty.desktop";
+        };
         kglobalshortcutsrc = {
-            kwin."Window Maximize"                     = "Meta+Return,Meta+PgUp,Maximize Window";
-            kwin."Window Minimize"                     = "Meta+M,Meta+PgUp,Minimize Window";
-            services."org.kde.konsole.desktop"._launch = "Meta+Q";
+            kwin."Window Maximize" = "Meta+Return,Meta+PgUp,Maximize Window";
+            kwin."Window Minimize" = "Meta+M,Meta+PgUp,Minimize Window";
+            "services/Alacritty.desktop"._k_friendly_name = "Alacritty";
+            "services/Alacritty.desktop"._launch = "Meta+Q,none,Launch Alacritty";
         };
         kwinrc = {
             Desktops   = { Number = 3; Rows = 1; };
