@@ -45,9 +45,11 @@
             vim.api.nvim_set_hl(0, "LineNr"       , { fg = "#5f5f5f", bold = false })
             vim.api.nvim_set_hl(0, "CursorLineNr" , { fg = "#ffffff", bold = true })
 
-            -- tabs
+            -- TABS
 
             vim.opt.showtabline = 2
+            vim.opt.tabline = "%!v:lua.SimpleTabLine()"
+
             local fn = vim.fn
             function _G.SimpleTabLine()
                 local t, cur = {}, fn.tabpagenr()
@@ -67,12 +69,13 @@
                 end
                 return table.concat(t)
             end
-            vim.opt.tabline = "%!v:lua.SimpleTabLine()"
-            vim.cmd("autocmd FileType netrw nnoremap <buffer> <C-l> gt")
-            vim.keymap.set({"n","v","i"}, "<C-l>", function() vim.cmd.normal("gt") end)
-            vim.keymap.set({"n","v","i"}, "<C-h>", function() vim.cmd.normal("gT") end)
 
-            -- fuzzy file search
+            vim.keymap.set({"n","v"}     , "<leader>n" , ":tabnew<CR>")
+            vim.keymap.set({"n","v","i"} , "<C-l>"     , "<Esc>:tabnext<CR>")
+            vim.keymap.set({"n","v","i"} , "<C-h>"     , "<Esc>:tabprevious<CR>")
+            vim.cmd("autocmd FileType netrw nnoremap <buffer> <C-l> gt")
+
+            -- FUZZY FILE SEARCH
 
             local function pick_file()
                 local tmp = vim.fn.tempname()
@@ -88,9 +91,10 @@
                     end
                 })
             end
+
             vim.keymap.set({"n","v","i"}, "<C-t>", pick_file)
 
-            -- fuzzy directory search
+            -- FUZZY DIRECTORY SEARCH
 
             local function pick_dir()
                 local tmp = vim.fn.tempname()
@@ -112,35 +116,10 @@
                     end}
                 )
             end
+
             vim.keymap.set({"n","v","i"}, "<C-f>", pick_dir)
 
-            -- align after word
-
-            local function align_after(n)
-                n = tonumber(n) or 1
-                local rows, max_left = {}, 0
-                local first, last = vim.fn.line("'<"), vim.fn.line("'>")
-                for line = first, last do
-                    local text, pos, count = vim.fn.getline(line), 1, 0
-                    repeat
-                        local start, stop = text:find("%S+", pos)
-                        if not start then break end
-                        count, pos = count + 1, stop + 1
-                    until count == n
-                    if count == n then
-                        local left  = text:sub(1, pos - 1):gsub("%s+$", "")
-                        local right = text:sub(pos):gsub("^%s+", "")
-                        rows[#rows + 1] = { idx = line, left = left, right = right }
-                        if #left > max_left then max_left = #left end
-                    end
-                end
-                local fmt = "%-" .. (max_left + 1) .. "s%s"
-                for _, row in ipairs(rows) do vim.fn.setline(row.idx, fmt:format(row.left, row.right)) end
-            end
-            vim.api.nvim_create_user_command("AlignAfter", function(o) align_after(o.args) end, { range = true, nargs = "?" })
-            vim.keymap.set("v", "<leader>aa", ":'<,'>AlignAfter<Space>")
-
-            -- align delimiter
+            -- ALIGN DELIMITERS
 
             local function nth_top(line, delim, n)
                 local len, depth, quote, esc, hits = #delim, 0, nil, false, {}
@@ -197,7 +176,34 @@
             vim.api.nvim_create_user_command("AlignDelim", function(o) align_delim(o.fargs[1]) end, {range = true, nargs = 1})
             vim.keymap.set("v", "<leader>ad", ":'<,'>AlignDelim ")
 
-            -- toggle relative line numbers
+            -- ALIGN AFTER WORD
+
+            local function align_after(n)
+                n = tonumber(n) or 1
+                local rows, max_left = {}, 0
+                local first, last = vim.fn.line("'<"), vim.fn.line("'>")
+                for line = first, last do
+                    local text, pos, count = vim.fn.getline(line), 1, 0
+                    repeat
+                        local start, stop = text:find("%S+", pos)
+                        if not start then break end
+                        count, pos = count + 1, stop + 1
+                    until count == n
+                    if count == n then
+                        local left  = text:sub(1, pos - 1):gsub("%s+$", "")
+                        local right = text:sub(pos):gsub("^%s+", "")
+                        rows[#rows + 1] = { idx = line, left = left, right = right }
+                        if #left > max_left then max_left = #left end
+                    end
+                end
+                local fmt = "%-" .. (max_left + 1) .. "s%s"
+                for _, row in ipairs(rows) do vim.fn.setline(row.idx, fmt:format(row.left, row.right)) end
+            end
+
+            vim.api.nvim_create_user_command("AlignAfter", function(o) align_after(o.args) end, { range = true, nargs = "?" })
+            vim.keymap.set("v", "<leader>aa", ":'<,'>AlignAfter<Space>")
+
+            -- TOGGLE RELATIVE LINE NUMBERS
 
             local function toggle_relative()
                 local rel = not vim.wo.relativenumber
@@ -205,10 +211,11 @@
                 vim.api.nvim_set_hl(0, "LineNr"       , { fg = rel and "#5f5f5f" or "#ffffff" , bold = false })
                 vim.api.nvim_set_hl(0, "CursorLineNr" , { fg = "#ffffff"                      , bold = true })
             end
+
             vim.api.nvim_create_user_command("ToggleRelative", toggle_relative, {})
             vim.keymap.set({"n","v"}, "<leader>rl", ":ToggleRelative<CR>")
 
-            -- toggle word wrap
+            -- TOGGLE WORD WRAP
 
             local function toggle_wrap()
                 if vim.opt.wrap:get() then
@@ -219,6 +226,7 @@
                     print("word wrap enabled")
                 end
             end
+
             vim.api.nvim_create_user_command("Wrap", toggle_wrap, {})
             vim.keymap.set({"n","v"}, "<leader>ww", ":Wrap<CR>")
         '';
