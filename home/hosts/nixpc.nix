@@ -9,6 +9,7 @@
             age
             brave
             discord
+            ffmpeg
             fzf
             gimp
             keepassxc
@@ -19,6 +20,7 @@
             spotify
             vlc
             wireshark
+            yt-dlp
         ];
 
         file = {
