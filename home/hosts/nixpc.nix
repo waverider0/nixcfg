@@ -28,6 +28,7 @@
             spotify
             vlc
             wireshark
+            xournalpp
             yt-dlp
         ];
     };
