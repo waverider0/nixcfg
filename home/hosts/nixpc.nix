@@ -5,6 +5,12 @@
         username      = "allen";
         homeDirectory = "/home/allen";
 
+        file = {
+            ".ssh/config".source = ../../secrets/ssh_config;
+            ".ssh/github.pub".source = ../../secrets/github.pub;
+            ".ssh/xmr.pub".source = ../../secrets/xmr.pub;
+        };
+
         packages = with pkgs; [
             age
             brave
@@ -12,7 +18,9 @@
             ffmpeg
             fzf
             gimp
+            kdePackages.kdenlive
             keepassxc
+            obs-studio
             opentofu
             qbittorrent
             signal-desktop
@@ -22,12 +30,6 @@
             wireshark
             yt-dlp
         ];
-
-        file = {
-            ".ssh/config".source = ../../secrets/ssh_config;
-            ".ssh/github.pub".source = ../../secrets/github.pub;
-            ".ssh/xmr.pub".source = ../../secrets/xmr.pub;
-        };
     };
 
     age = {

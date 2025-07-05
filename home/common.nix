@@ -15,6 +15,8 @@
     programs.neovim = {
         enable = true;
         extraLuaConfig = ''
+            -- GENERAL SETTINGS
+
             vim.g.mapleader        = " "
             vim.opt.autoindent     = false
             vim.opt.cindent        = false
@@ -72,7 +74,8 @@
                 return table.concat(t)
             end
 
-            vim.keymap.set({"n","v"}     , "<leader>n" , ":tabnew<CR>")
+            vim.keymap.set({"n","v"}     , "<leader>f" , ":tabnew | Ex<CR>")
+            vim.keymap.set({"n","v"}     , "<leader>t" , ":tabnew<CR>")
             vim.keymap.set({"n","v","i"} , "<C-l>"     , "<Esc>:tabnext<CR>")
             vim.keymap.set({"n","v","i"} , "<C-h>"     , "<Esc>:tabprevious<CR>")
             vim.cmd("autocmd FileType netrw nnoremap <buffer> <C-l> gt")

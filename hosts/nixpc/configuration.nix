@@ -14,7 +14,7 @@
     users.users.allen = {
         isNormalUser = true;
         description = "allen";
-        extraGroups = [ "networkmanager" "wheel" ];
+        extraGroups = [ "networkmanager" "wheel" "docker" ];
     };
 
     boot.loader.systemd-boot.enable = true;
@@ -69,6 +69,7 @@
         git
         htop
         lm_sensors
+        lsof
         vim
         wget
         wl-clipboard

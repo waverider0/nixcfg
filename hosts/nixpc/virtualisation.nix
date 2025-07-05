@@ -2,8 +2,7 @@
 
 {
     virtualisation = {
-        docker.rootless.enable = true;
-        docker.rootless.setSocketVariable = true;
+        docker.enable = true;
         libvirtd.enable = true;
         spiceUSBRedirection.enable = true;
     };
