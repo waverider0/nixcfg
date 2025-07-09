@@ -156,24 +156,25 @@
 
 			local function nth_top(line, delim, n)
 				local len, depth, quote, esc, hits = #delim, 0, nil, false, {}
-				for i = 1, #line do
-					local c = line:sub(i, i)
+				local function add_hit(d, pos) (hits[d] or (function() local t={}; hits[d]=t; return t end)())[ # (hits[d] or {}) + 1 ] = pos end
+				local i = 1
+				while i <= #line do
+					local c = line:sub(i,i)
 					if quote then
-						esc = c == "\\" and not esc
+						esc = (c == "\\") and not esc
 						if c == quote and not esc then quote, esc = nil, false end
 					else
-						if c == '"' or c == "'"       then quote = c
+						if line:sub(i, i+len-1) == delim then add_hit(depth, i); i = i + len; goto continue end
+						if c == '"' or c == "'" then quote = c
 						elseif c == '(' or c == '{' or c == '[' then depth = depth + 1
-						elseif c == ')' or c == '}' or c == ']' then depth = depth - 1
-						elseif line:sub(i, i + len - 1) == delim then
-							(hits[depth] or (function() local t = {}; hits[depth] = t; return t end)())[ # (hits[depth] or {}) + 1 ] = i
-							i = i + len - 1
-						end
+						elseif c == ')' or c == '}' or c == ']' then depth = depth - 1 end
 					end
+					::continue::
+					i = i + 1
 				end
-				local min_depth = math.huge; for depth in pairs(hits) do if depth < min_depth then min_depth = depth end end
-				local at_min = hits[min_depth]; if not at_min then return end
-				return at_min[n], min_depth
+				local min = math.huge for d in pairs(hits) do if d < min then min = d end end
+				local h = hits[min]; if not h then return end
+				return h[n], min
 			end
 
 			local function align_delim(delim)
