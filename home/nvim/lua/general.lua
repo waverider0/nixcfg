@@ -23,7 +23,7 @@ vim.keymap.set({"n","v","i"} , "<C-q>"     , function() vim.cmd(#vim.api.nvim_li
 vim.cmd("autocmd FileType * setlocal formatoptions-=cro") -- disable automatic commenting on newline
 vim.cmd("autocmd FileType netrw setlocal syntax=netrw")
 vim.cmd("filetype indent off")
-vim.cmd("syntax off")
+vim.cmd("syntax manual")
 
 vim.api.nvim_set_hl(0 , "CursorLineNr" , { fg = "#ffffff", bold = true })
 vim.api.nvim_set_hl(0 , "LineNr"       , { fg = "#5f5f5f", bold = false })
