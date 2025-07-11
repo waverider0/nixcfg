@@ -14,7 +14,7 @@
 	users.users.allen = {
 		isNormalUser = true;
 		description = "allen";
-		extraGroups = [ "networkmanager" "wheel" "docker" ];
+		extraGroups = [ "networkmanager" "wheel" ];
 	};
 
 	boot.loader.systemd-boot.enable = true;

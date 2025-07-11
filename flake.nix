@@ -15,7 +15,7 @@
 		homeConfigurations = {
 			"allen@nixpc" = home-manager.lib.homeManagerConfiguration {
 				pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
-				modules = [ ./hosts/_home/common.nix ./hosts/_home/nixpc.nix agenix.homeManagerModules.default ];
+				modules = [ ./home/common.nix ./home/nixpc.nix agenix.homeManagerModules.default ];
 			};
 		};
 
