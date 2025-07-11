@@ -1,37 +1,12 @@
 { config, lib, pkgs, ... }:
 
 {
-	home = {
-		username      = "allen";
-		homeDirectory = "/home/allen";
+	home.username      = "allen";
+	home.homeDirectory = "/home/allen";
 
-		file = {
-			".ssh/config".source = ../../secrets/ssh_config;
-			".ssh/github.pub".source = ../../secrets/github.pub;
-			".ssh/xmr.pub".source = ../../secrets/xmr.pub;
-		};
-
-		packages = with pkgs; [
-			age
-			brave
-			discord
-			ffmpeg
-			fzf
-			gimp
-			kdePackages.kdenlive
-			keepassxc
-			obs-studio
-			opentofu
-			qbittorrent
-			ripgrep
-			signal-desktop
-			spotdl
-			spotify
-			vlc
-			wireshark
-			xournalpp
-			yt-dlp
-		];
+	home.file = {
+		".ssh/config".source = ../../secrets/ssh_config;
+		".ssh/github.pub".source = ../../secrets/github.pub;
 	};
 
 	age = {
@@ -44,10 +19,6 @@
 			"github.age" = {
 				file = ../../secrets/github.age;
 				path = "/home/allen/.ssh/github";
-			};
-			"xmr.age" = {
-				file = ../../secrets/xmr.age;
-				path = "/home/allen/.ssh/xmr";
 			};
 		};
 	};
@@ -79,4 +50,26 @@
 			Xwayland   = { Scale = 1; };
 		};
 	};
+
+	home.packages = with pkgs; [
+		age
+		brave
+		discord
+		ffmpeg
+		fzf
+		gimp
+		kdePackages.kdenlive
+		keepassxc
+		obs-studio
+		opentofu
+		qbittorrent
+		ripgrep
+		signal-desktop
+		spotdl
+		spotify
+		vlc
+		wireshark
+		xournalpp
+		yt-dlp
+	];
 }

@@ -18,6 +18,4 @@ age -d -i id -o decrypted encrypted.age
 
 ```
 
-## note
-make sure to `git add` changes before running commands (else can cause weird errors)
-
+**Note:** `git add` path changes before home manager switching

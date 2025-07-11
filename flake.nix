@@ -13,17 +13,9 @@
 
 	outputs = { self, nixpkgs, agenix, home-manager, ... }: {
 		homeConfigurations = {
-			"allen@mac" = home-manager.lib.homeManagerConfiguration {
-				pkgs = import nixpkgs { system = "aarch64-darwin"; config.allowUnfree = true; };
-				modules = [ ./home/common.nix ./home/hosts/mac.nix agenix.homeManagerModules.default ];
-			};
 			"allen@nixpc" = home-manager.lib.homeManagerConfiguration {
 				pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
-				modules = [ ./home/common.nix ./home/hosts/nixpc.nix agenix.homeManagerModules.default ];
-			};
-			"user@xmr" = home-manager.lib.homeManagerConfiguration {
-				pkgs = import nixpkgs { system = "x86_64-linux"; };
-				modules = [ ./home/common.nix ./home/hosts/xmr.nix ];
+				modules = [ ./hosts/_home/common.nix ./hosts/_home/nixpc.nix agenix.homeManagerModules.default ];
 			};
 		};
 
@@ -31,10 +23,6 @@
 			"nixpc" = nixpkgs.lib.nixosSystem {
 				system = "x86_64-linux";
 				modules = [ ./hosts/nixpc/configuration.nix agenix.nixosModules.default ];
-			};
-			"xmr" = nixpkgs.lib.nixosSystem {
-				system = "x86_64-linux";
-				modules = [ ./hosts/xmr/configuration.nix ];
 			};
 		};
 	};
