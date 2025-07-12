@@ -36,8 +36,8 @@
 		kglobalshortcutsrc = {
 			kwin."Window Maximize" = "Meta+Return,Meta+PgUp,Maximize Window";
 			kwin."Window Minimize" = "Meta+M,Meta+PgUp,Minimize Window";
-			"services/Alacritty.desktop"._k_friendly_name = "Alacritty";
-			"services/Alacritty.desktop"._launch = "Meta+Q,none,Launch Alacritty";
+			services."Alacritty.desktop"._k_friendly_name = "Alacritty";
+			services."Alacritty.desktop"._launch = "Meta+Q";
 		};
 	};
 
