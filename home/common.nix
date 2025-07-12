@@ -33,11 +33,11 @@
 			bind % split-window -h -c "#{pane_current_path}"
 			bind \" split-window -v -c "#{pane_current_path}"
 
-			bind -T root l if-shell -F "#{==:#{pane_mode},tree-mode}" "send-keys NUL" "send-keys l"
-			bind h select-pane -L
-			bind j select-pane -D
-			bind k select-pane -U
-			bind l select-pane -R
+			bind q choose-session
+			bind w select-pane -U
+			bind a select-pane -L
+			bind s select-pane -D
+			bind d select-pane -R
 
 			set -g -w mode-keys vi
 			bind -T copy-mode-vi v send-keys -X begin-selection

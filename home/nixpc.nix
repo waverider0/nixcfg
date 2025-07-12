@@ -29,10 +29,6 @@
 	'';
 
 	qt.kde.settings = {
-		kcminputrc = {
-			Keyboard.RepeatDelay = 300;
-			Keyboard.RepeatRate = 50;
-		};
 		kdeglobals.General = {
 			TerminalApplication = "alacritty";
 			TerminalService = "alacritty.desktop";
@@ -42,12 +38,6 @@
 			kwin."Window Minimize" = "Meta+M,Meta+PgUp,Minimize Window";
 			"services/Alacritty.desktop"._k_friendly_name = "Alacritty";
 			"services/Alacritty.desktop"._launch = "Meta+Q,none,Launch Alacritty";
-		};
-		kwinrc = {
-			Desktops   = { Number = 3; Rows = 1; };
-			NightColor = { Active = true; Mode = "Constant"; NightTemperature = 3000; };
-			Tiling     = { padding = 4; };
-			Xwayland   = { Scale = 1; };
 		};
 	};
 
