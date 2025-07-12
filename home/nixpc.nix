@@ -50,6 +50,7 @@
 		gimp
 		kdePackages.kdenlive
 		keepassxc
+		mpv
 		obs-studio
 		opentofu
 		qbittorrent
@@ -57,7 +58,6 @@
 		signal-desktop
 		spotdl
 		spotify
-		vlc
 		wireshark
 		xournalpp
 		yt-dlp
