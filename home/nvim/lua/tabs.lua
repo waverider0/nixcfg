@@ -22,7 +22,7 @@ end
 
 vim.keymap.set({"n","v"}, "<leader>f", ":tabnew | Ex<CR>")
 vim.keymap.set({"n","v"}, "<leader>t", ":tabnew<CR>")
+vim.keymap.set({"n","v","i"}, "<C-h>", "<Esc>:tabprevious<CR>")
+vim.keymap.set({"n","v","i"}, "<C-l>", "<Esc>:tabnext<CR>")
 
 vim.cmd("autocmd FileType netrw nnoremap <buffer> <C-l> gt")
-vim.keymap.set({"n","v","i"}, "<C-l>", "<Esc>:tabnext<CR>")
-vim.keymap.set({"n","v","i"}, "<C-h>", "<Esc>:tabprevious<CR>")
