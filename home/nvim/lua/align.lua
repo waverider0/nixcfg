@@ -1,4 +1,4 @@
--- @NOTE: should be used sparingly otherwise creates editing friction (esp for other maintainers)
+-- @NOTE: use very sparingly otherwise will create editing friction (esp for other maintainers)
 
 local function align(n)
 	n = tonumber(n) or 1

@@ -36,7 +36,7 @@ local function files()
 				if sel ~= "" then vim.cmd("tab drop"..vim.fn.fnameescape(sel)) end
 			end)
 		end
-		})
+	})
 end
 
 local function folders()
@@ -56,8 +56,8 @@ local function folders()
 				end
 				vim.cmd("tabnew"..vim.fn.fnameescape(dir))
 			end)
-		end}
-	)
+		end
+	})
 end
 
 vim.keymap.set({"n","v","i"}, "<C-g>", lines)
