@@ -2,6 +2,7 @@
 
 {
 	imports = [
+		../common.nix
 		./hardware-configuration.nix
 		./virtualisation.nix
 		./vpn.nix
@@ -60,8 +61,8 @@
 			enable = true;
 			keyboards.default.settings.main = {
 				capslock = "overload(control, noop)";
-				insert = "grave";
 				delete = "grave";
+				insert = "grave";
 			};
 		};
 	};
@@ -70,13 +71,10 @@
 	programs.zsh.enable = true;
 
 	environment.systemPackages = with pkgs; [
-		curl
-		git
-		htop
 		lm_sensors
 		lsof
-		vim
-		wget
+		man-pages
+		man-pages-posix
 		wl-clipboard
 	];
 

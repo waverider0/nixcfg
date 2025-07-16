@@ -1,7 +1,10 @@
 { config, pkgs, ... }:
 
 {
-	imports = [ ./hardware-configuration.nix ];
+	imports = [
+		../common.nix
+		./hardware-configuration.nix
+	];
 
 	nixpkgs.config.allowUnfree = false;
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -68,11 +71,6 @@
 	};
 
 	environment.systemPackages = with pkgs; [
-		curl
-		git
-		htop
-		vim
-		wget
 		wl-clipboard
 	];
 

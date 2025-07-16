@@ -64,11 +64,12 @@
 		initContent = ''
 			export CLICOLOR=1
 			export PS1=$'%n@%m:%{\e[01;32m%}%~%{\e[0m%}$ '
-
-			set -o vi
-			alias vi='nvim'
 			export MANPAGER='nvim +Man!'
 
+			alias open='xdg-open'
+			alias vi='nvim'
+
+			set -o vi
 			setopt EXTENDED_GLOB
 			setopt GLOBDOTS
 			setopt NULL_GLOB
