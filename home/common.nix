@@ -31,6 +31,7 @@
 
 			bind Enter new-session
 			bind c new-window -c "#{pane_current_path}"
+			unbind %
 			bind \; split-window -h -c "#{pane_current_path}"
 			bind : split-window -v -c "#{pane_current_path}"
 
@@ -40,10 +41,10 @@
 			bind s select-pane -D
 			bind d select-pane -R
 
-			bind h resize-pane -L 15
-			bind j resize-pane -D 15
-			bind k resize-pane -U 15
-			bind l resize-pane -R 15
+			bind h resize-pane -L 20
+			bind j resize-pane -D 20
+			bind k resize-pane -U 20
+			bind l resize-pane -R 20
 
 			set -g -w mode-keys vi
 			bind -T copy-mode-vi v send-keys -X begin-selection
