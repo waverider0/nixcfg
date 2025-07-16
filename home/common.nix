@@ -26,7 +26,6 @@
 		extraConfig = ''
 			unbind C-b
 			set -g prefix `
-			set -g prefix2 Delete
 			bind e send-prefix
 
 			bind Enter new-session

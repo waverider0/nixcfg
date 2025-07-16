@@ -56,9 +56,14 @@
 			pulse.enable      = true;
 		};
 
-		keyd.enable = true;
-		keyd.keyboards.default.settings.main.capslock = "overload(control, noop)";
-		libinput.touchpad.disableWhileTyping = true;
+		keyd = {
+			enable = true;
+			keyboards.default.settings.main = {
+				capslock = "overload(control, noop)";
+				insert = "grave";
+				delete = "grave";
+			};
+		};
 	};
 
 	programs.gnome-disks.enable = true;
