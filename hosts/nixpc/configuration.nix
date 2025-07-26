@@ -70,13 +70,20 @@
 	programs.gnome-disks.enable = true;
 	programs.zsh.enable = true;
 
-	environment.systemPackages = with pkgs; [
-		lm_sensors
-		lsof
-		man-pages
-		man-pages-posix
-		wl-clipboard
-	];
+	environment = {
+		systemPackages = with pkgs; [
+			lm_sensors
+			lsof
+			man-pages
+			man-pages-posix
+			wl-clipboard
+		];
+		plasma6.excludePackages = with pkgs.kdePackages; [
+			kate
+			konsole
+			elisa
+		];
+	};
 
 	hardware.bluetooth.enable = true;
 

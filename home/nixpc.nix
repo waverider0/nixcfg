@@ -50,6 +50,7 @@
 		gimp
 		kdePackages.kdenlive
 		keepassxc
+		mednafen
 		mpv
 		obs-studio
 		opentofu
