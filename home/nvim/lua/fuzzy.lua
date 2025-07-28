@@ -1,4 +1,4 @@
-local function lines()
+local function grep()
 	local tmp = vim.fn.tempname()
 	vim.cmd("botright 25new | startinsert")
 	local win = vim.api.nvim_get_current_win()
@@ -60,6 +60,6 @@ local function folders()
 	})
 end
 
-vim.keymap.set({"n","v","i"}, "<C-g>", lines)
+vim.keymap.set({"n","v","i"}, "<C-g>", grep)
 vim.keymap.set({"n","v","i"}, "<C-t>", files)
 vim.keymap.set({"n","v","i"}, "<C-f>", folders)
