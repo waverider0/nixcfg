@@ -33,6 +33,7 @@
 
 			bind Enter new-session
 			bind c new-window -c "#{pane_current_path}"
+			bind % split-window -h -c "#{pane_current_path}"
 
 			bind q choose-session
 			bind w select-pane -U
