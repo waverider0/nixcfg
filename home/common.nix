@@ -4,7 +4,10 @@
 	home.stateVersion = "25.05";
 	programs.home-manager.enable = true;
 
-	programs.alacritty.enable = true;
+	programs.alacritty = {
+		enable = true;
+		settings.window.opacity = 0.90;
+	};
 
 	programs.git = {
 		enable    = true;

@@ -24,4 +24,5 @@ vim.keymap.set({"n","v","i"} , "<C-q>"      , function() vim.cmd(#vim.api.nvim_l
 vim.cmd("autocmd FileType * setlocal formatoptions-=cro")
 vim.cmd("autocmd FileType netrw setlocal syntax=netrw")
 vim.cmd("filetype indent off")
+vim.cmd("hi Normal guibg=NONE ctermbg=NONE")
 vim.cmd("syntax manual")
