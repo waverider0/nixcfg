@@ -30,7 +30,6 @@
 		keepassxc
 		mpv
 		obs-studio
-		opentofu
 		(python313.withPackages (ps: [ ps.cryptography ]))
 		qbittorrent
 		ripgrep
