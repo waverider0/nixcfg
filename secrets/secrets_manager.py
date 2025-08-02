@@ -18,8 +18,7 @@ SALT_FILE = os.path.join(BASE_DIR, "salt.bin")
 
 def atomic_write(path, data, mode=0o600):
 	fd, tmp = tempfile.mkstemp(dir=os.path.dirname(path))
-	with os.fdopen(fd, "wb") as f:
-		f.write(data)
+	with os.fdopen(fd, "wb") as f: f.write(data)
 	os.chmod(tmp, mode)
 	os.replace(tmp, path)
 
@@ -46,8 +45,7 @@ def rotate_all():
 	while True:
 		new_pwd = getpass.getpass("New password: ")
 		new_pwd2 = getpass.getpass("Confirm new password: ")
-		if new_pwd == new_pwd2:
-			break
+		if new_pwd == new_pwd2: break
 		print("Passwords do not match. Try again.", file=sys.stderr)
 
 	new_salt = secrets.token_bytes(16)
@@ -79,24 +77,21 @@ def load_and_symlink():
 	for enc, (ram, link) in SECRETS.items():
 		data = decrypt(open(os.path.join(BASE_DIR, enc), "rb").read(), key)
 		atomic_write(ram, data)
-		if os.path.exists(link) or os.path.islink(link):
-			os.remove(link)
+		if os.path.exists(link) or os.path.islink(link): os.remove(link)
 		os.makedirs(os.path.dirname(link), exist_ok=True)
 		os.symlink(ram, link)
 		print(f"loaded and linked {ram} -> {link}")
 
 	for src, dst in PUBLIC.items():
 		src_path = os.path.join(BASE_DIR, src)
-		if os.path.exists(dst) or os.path.islink(dst):
-			os.remove(dst)
+		if os.path.exists(dst) or os.path.islink(dst): os.remove(dst)
 		os.makedirs(os.path.dirname(dst), exist_ok=True)
 		os.symlink(src_path, dst)
 		print(f"linked {src_path} -> {dst}")
 
 def decrypt_single(target):
 	enc_path = os.path.join(BASE_DIR, target)
-	if not os.path.exists(enc_path):
-		sys.exit(f"File not found: {enc_path}")
+	if not os.path.exists(enc_path): sys.exit(f"File not found: {enc_path}")
 
 	pwd = getpass.getpass("Password: ")
 	key = derive_key(pwd, open(SALT_FILE, "rb").read())
