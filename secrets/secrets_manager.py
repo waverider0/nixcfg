@@ -108,19 +108,16 @@ def decrypt_single(target):
 	print(f"decrypted {enc_path} -> {plain_path}")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2 or sys.argv[1] not in ("-e", "-d", "-l"):
-        sys.exit(f"Usage: {sys.argv[0]} -e | -d <file> | -l")
+	if len(sys.argv) < 2 or sys.argv[1] not in ("-e", "-d", "-l"):
+		sys.exit(f"Usage: {sys.argv[0]} -e | -d <file> | -l")
 
-    if sys.argv[1] == "-e":
-        rotate_all()
-    elif sys.argv[1] == "-d":
-        if len(sys.argv) == 2:
-            load_and_symlink()
-        elif len(sys.argv) == 3:
-            decrypt_single(sys.argv[2])
-        else:
-            sys.exit(f"Usage: {sys.argv[0]} -d <file>")
-    elif sys.argv[1] == "-l":
-        load_and_symlink()
-    else:
-        sys.exit(f"Usage: {sys.argv[0]} -e | -d <file> | -l")
+	if sys.argv[1] == "-e": rotate_all()
+
+	elif sys.argv[1] == "-d":
+		if len(sys.argv) == 2: load_and_symlink()
+		elif len(sys.argv) == 3: decrypt_single(sys.argv[2])
+		else: sys.exit(f"Usage: {sys.argv[0]} -d <file>")
+
+	elif sys.argv[1] == "-l": load_and_symlink()
+
+	else: sys.exit(f"Usage: {sys.argv[0]} -e | -d <file> | -l")
