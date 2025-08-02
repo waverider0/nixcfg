@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, pkgs-unstable, ... }:
 
 {
 	imports = [
@@ -69,13 +69,14 @@
 	programs.zsh.enable = true;
 
 	environment = {
-		systemPackages = with pkgs; [
+		systemPackages = (with pkgs; [
 			lm_sensors
 			lsof
 			man-pages
 			man-pages-posix
 			wl-clipboard
-		];
+		]) ++ (with pkgs-unstable; [
+		]);
 		plasma6.excludePackages = with pkgs.kdePackages; [
 			elisa
 			kate

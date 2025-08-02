@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, pkgs-unstable, ... }:
 
 {
 	home.username = "allen";
@@ -22,7 +22,7 @@
 		};
 	};
 
-	home.packages = with pkgs; [
+	home.packages = (with pkgs; [
 		brave
 		discord
 		ffmpeg
@@ -38,5 +38,6 @@
 		spotify
 		wireshark
 		yt-dlp
-	];
+	]) ++ (with pkgs-unstable; [
+	]);
 }
