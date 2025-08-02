@@ -4,11 +4,6 @@
 	home.username = "allen";
 	home.homeDirectory = "/home/allen";
 
-	home.file = {
-		".ssh/config".source = ../secrets/ssh_config;
-		".ssh/github.pub".source = ../secrets/github.pub;
-	};
-
 	programs.tmux.extraConfig = lib.mkAfter ''
 		set-option -g default-shell "${pkgs.zsh}/bin/zsh"
 		bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'wl-copy'

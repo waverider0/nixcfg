@@ -13,7 +13,6 @@ PUBLIC = {
 	"github.pub": "/home/allen/.ssh/github.pub",
 	"ssh_config": "/home/allen/.ssh/config",
 }
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SALT_FILE = os.path.join(BASE_DIR, "salt.bin")
 
@@ -120,7 +119,7 @@ if __name__ == "__main__":
         elif len(sys.argv) == 3:
             decrypt_single(sys.argv[2])
         else:
-            sys.exit(f"Usage: {sys.argv[0]} -d | -d <file>")
+            sys.exit(f"Usage: {sys.argv[0]} -d <file>")
     elif sys.argv[1] == "-l":
         load_and_symlink()
     else:
