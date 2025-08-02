@@ -8,14 +8,7 @@ sudo nixos-rebuild switch --flake '.#nixpc'
 ```
 cd nixcfg
 nix-shell -p home-manager
-./hm '.#allen@nixpc'
-```
-
-## manually decrypt a secret
-```
-cd secrets
-age -d -i id -o decrypted encrypted.age
-
+home-manager switch --flake '.#allen@nixpc'
 ```
 
 **Note:** `git add` path changes before home manager switching

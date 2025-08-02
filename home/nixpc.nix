@@ -1,26 +1,12 @@
 { config, lib, pkgs, ... }:
 
 {
-	home.username      = "allen";
+	home.username = "allen";
 	home.homeDirectory = "/home/allen";
 
 	home.file = {
 		".ssh/config".source = ../secrets/ssh_config;
 		".ssh/github.pub".source = ../secrets/github.pub;
-	};
-
-	age = {
-		identityPaths = [ ../secrets/id ];
-		secrets = {
-			".kdbx.kdbx.age" = {
-				file = ../secrets/.kdbx.kdbx.age;
-				path = "/home/allen/.kdbx.kdbx";
-			};
-			"github.age" = {
-				file = ../secrets/github.age;
-				path = "/home/allen/.ssh/github";
-			};
-		};
 	};
 
 	programs.tmux.extraConfig = lib.mkAfter ''
@@ -42,25 +28,21 @@
 	};
 
 	home.packages = with pkgs; [
-		age
 		brave
 		discord
 		ffmpeg
 		fzf
-		gimp
-		kdePackages.kdenlive
 		keepassxc
-		mednafen
 		mpv
 		obs-studio
 		opentofu
+		(python313.withPackages (ps: [ ps.cryptography ]))
 		qbittorrent
 		ripgrep
 		signal-desktop
 		spotdl
 		spotify
 		wireshark
-		xournalpp
 		yt-dlp
 	];
 }
